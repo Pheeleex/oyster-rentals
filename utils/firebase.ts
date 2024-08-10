@@ -26,14 +26,14 @@ export const storage = getStorage(app)
 export const db = getFirestore(app)
 
 
-const fetchProperties = async (): Promise <CarSpecProps[]> => {
+const fetchCars = async (): Promise <CarSpecProps[]> => {
     try {
       const carCollectionRef = collection(db, 'Cars');
       const orderedQuery = query(carCollectionRef, orderBy('id'));
       const querySnapshot = await getDocs(orderedQuery);
       const carData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as CarSpecProps[];
   
-      const propertiesWithImages = await Promise.all(carData.map(async (car) => {
+      const carWithImages = await Promise.all(carData.map(async (car) => {
         let images: string[] = [];
         const imagePath = car.ImagePath || car.id;  // Check for imagePath, default to property.id if not available
         const imageListRef = ref(storage, `${imagePath}/`);
@@ -54,11 +54,11 @@ const fetchProperties = async (): Promise <CarSpecProps[]> => {
   
       
      
-      return propertiesWithImages;
+      return carWithImages;
     } catch (error) {
       console.error('Error fetching properties:', error);
       return [];
     }
   };
   
-  export default fetchProperties;
+  export default fetchCars;

@@ -5,19 +5,13 @@ import SearchBar from "@/components/SearchBar";
 import ShowMore from "@/components/ShowMore";
 import { fuels, yearsOfProduction } from "@/constants";
 import { HomeProps } from "@/types";
-import { fetchCars } from "@/utils";
+import fetchCars from "@/utils/firebase";
 import Image from "next/image";
 
 export default async function Home({searchParams}: HomeProps) {
-  const allCars = await fetchCars({
-    manufacturer: searchParams.manufacturer || '',
-    year: searchParams.year || 2022,
-    fuel: searchParams.fuel || '',
-    limit: searchParams.limit || 10,
-    model: searchParams.model || '',
-  })
+  const allCars = await fetchCars()
 
- console.log(searchParams, 'params')
+ console.log(allCars, 'cars')
 
 
  const isDataEmpty = !Array.isArray(allCars) || 
@@ -37,31 +31,7 @@ export default async function Home({searchParams}: HomeProps) {
             <CustomFilter title='fuel' options={fuels}/>
             <CustomFilter title='year' options={yearsOfProduction} />
           </div>
-          {
-            !isDataEmpty ? (
-              <section>
-                 <div className="home__cars-wrapper">
-                    {
-                      allCars?.map((car, index) => (
-                        <CarCard car={car}
-                          key={index} />
-                      ))
-                    }
-                 </div>
-
-                 <ShowMore
-              pageNumber={(searchParams.limit || 10) / 10}
-              isNext={(searchParams.limit || 10) > allCars.length}
-            />
-              </section>
-            ) : (
-              <div className="home__error-container">
-                  <h2 className="text-back text-xl
-                  font-bold">Oops, no result</h2>
-                  <p>{allCars?.message}</p>
-              </div>
-            )
-          }
+          
         </div>
         </div>
       </main>

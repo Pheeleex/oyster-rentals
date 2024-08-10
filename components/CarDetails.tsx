@@ -1,8 +1,10 @@
-'use client'
+'use client';
 import { CarSpecProps } from "@/types";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css'; 
 
 interface CarDetailsProps {
     isOpen: boolean;
@@ -13,6 +15,15 @@ interface CarDetailsProps {
 const CarDetails = ({
     isOpen, closeModal, car
 }: CarDetailsProps) => {
+    // State to manage the selected date
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+    // Function to handle date changes
+    const onDateChange = (date: Date) => {
+        setSelectedDate(date);
+        // Add additional logic for booking or scheduling based on selectedDate
+    };
+
     return(
         <>
         <Transition appear show={isOpen} as={Fragment}>
@@ -71,60 +82,54 @@ const CarDetails = ({
                             </div>
 
                             <div className='flex gap-3'>
-                    <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
-                            <Image src="/hero.png"
-                                alt={`car`}
-                                fill priority 
-                                className='object-contain' />
-                    </div>
-                    <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
-                        <Image src="/hero.png"
-                        alt={`car`}
-                        fill priority 
-                        className='object-contain' />
-                    </div>
-                    <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
-                        <Image src="/hero.png"
-                            alt={`car`}
-                            fill priority 
-                            className='object-contain' />
-                    </div>
-                  </div>
-
-                </div>
-
-                <div className="flex-1 flex flex-col gap-2">
-                    <h2 className='font-semibold text-xl capitalize'>
-                        {car.Make} {car.Model}
-                    </h2>
-
-                    <div className="mt-3 flex flex-wrap gap-4">
-                        {
-                            Object.entries(car).map((
-                                [key, value]
-                            ) => (
-                                <div className='flex justify-between gap-5 w-full text-right' key={key} >
-                                    <h4 
-                                    className='text-grey 
-                                    capitalize'>
-                                        {key.split("_").join(" ")}
-                                    </h4>
-                                    <p className='text-black-100 font-semibold'>
-                                        {value}
-                                    </p>
+                                <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
+                                        <Image src="/hero.png"
+                                            alt={`car`}
+                                            fill priority 
+                                            className='object-contain' />
                                 </div>
-                            ) )
-                        }
-                    </div>
-                </div>
+                                <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
+                                    <Image src="/hero.png"
+                                    alt={`car`}
+                                    fill priority 
+                                    className='object-contain' />
+                                </div>
+                                <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
+                                    <Image src="/hero.png"
+                                        alt={`car`}
+                                        fill priority 
+                                        className='object-contain' />
+                                </div>
+                            </div>
+
+                            </div>
+
+                            {/* Replaced the object.entries part with Calendar */}
+                            <div className="flex-1 flex flex-col gap-2">
+                                <h2 className='font-semibold text-xl capitalize'>
+                                    {car.Make} {car.Model}
+                                </h2>
+
+                                <div className="mt-3 flex flex-wrap gap-4">
+                                    <div className='w-full'>
+                                        <h4 className='text-grey capitalize'>
+                                            Select a date for booking or scheduling:
+                                        </h4>
+                                        <Calendar
+                                            onChange={onDateChange}
+                                            value={selectedDate}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </DialogPanel>
                     </TransitionChild>
                 </div>
             </div>
             </Dialog>
-            
         </Transition>
     </>
-    )
+    );
 }
-export default CarDetails
+
+export default CarDetails;

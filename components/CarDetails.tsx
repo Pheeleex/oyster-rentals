@@ -1,5 +1,5 @@
 'use client'
-import { CarProps } from "@/types";
+import { CarSpecProps } from "@/types";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
 import { Fragment } from "react";
@@ -7,7 +7,7 @@ import { Fragment } from "react";
 interface CarDetailsProps {
     isOpen: boolean;
     closeModal: () => void;
-    car: CarProps;
+    car: CarSpecProps;
 }
 
 const CarDetails = ({
@@ -95,7 +95,7 @@ const CarDetails = ({
 
                 <div className="flex-1 flex flex-col gap-2">
                     <h2 className='font-semibold text-xl capitalize'>
-                        {car.make} {car.model}
+                        {car.Make} {car.Model}
                     </h2>
 
                     <div className="mt-3 flex flex-wrap gap-4">

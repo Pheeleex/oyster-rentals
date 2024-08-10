@@ -31,18 +31,32 @@ export default async function Home({searchParams}: HomeProps) {
             <CustomFilter title='fuel' options={fuels}/>
             <CustomFilter title='year' options={yearsOfProduction} />
           </div>
-           {
-            allCars? (
-              allCars.map((car, index) => (
-               <div key={index}>
-                 <h1>{car.Make}{car.Model}</h1>
-                </div>
-              ))
-            ): (
-              <p>none</p>
-            )
-           } 
         </div>
+        {
+            !isDataEmpty ? (
+              <section>
+                 <div className="home__cars-wrapper">
+                    {
+                      allCars?.map((car, index) => (
+                        <CarCard car={car}
+                          key={index} />
+                      ))
+                    }
+                 </div>
+
+                 <ShowMore 
+              pageNumber={(searchParams.limit || 10) / 10}
+              isNext={(searchParams.limit || 10) > allCars.length}
+            />
+              </section>
+            ) : (
+              <div className="home__error-container">
+                  <h2 className="text-back text-xl
+                  font-bold">Oops, no result</h2>
+                  <p>Nothing o</p>
+              </div>
+            )
+          }
         </div>
       </main>
   );

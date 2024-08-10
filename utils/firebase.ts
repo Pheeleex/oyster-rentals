@@ -32,7 +32,8 @@ const fetchCars = async (): Promise <CarSpecProps[]> => {
       const orderedQuery = query(carCollectionRef, orderBy('id'));
       const querySnapshot = await getDocs(orderedQuery);
       const carData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as CarSpecProps[];
-  
+     
+  console.log(carData, 'data')
       const carWithImages = await Promise.all(carData.map(async (car) => {
         let images: string[] = [];
         const imagePath = car.ImagePath || car.id;  // Check for imagePath, default to property.id if not available
@@ -42,6 +43,7 @@ const fetchCars = async (): Promise <CarSpecProps[]> => {
         try {
           const imageList = await listAll(imageListRef);
           images = await Promise.all(imageList.items.map(async (item) => {
+            console.log(imageList, 'image')
             const url = await getDownloadURL(item);
             return url;
           }));

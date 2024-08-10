@@ -31,7 +31,17 @@ export default async function Home({searchParams}: HomeProps) {
             <CustomFilter title='fuel' options={fuels}/>
             <CustomFilter title='year' options={yearsOfProduction} />
           </div>
-          
+           {
+            allCars? (
+              allCars.map((car, index) => (
+               <div key={index}>
+                 <h1>{car.Make}{car.Model}</h1>
+                </div>
+              ))
+            ): (
+              <p>none</p>
+            )
+           } 
         </div>
         </div>
       </main>

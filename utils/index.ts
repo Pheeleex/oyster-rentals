@@ -1,49 +1,21 @@
 import { FilterProps } from "@/types";
 
-export async function fetchCars(filters: FilterProps) {
-  const { manufacturer, year, model, limit, fuel } = filters;
 
-  const headers = {
-    'X-Api-Key': 'jZ0FfTUdKtAG3uVmI+3wAA==4DI9jthK9V9MWG7V',
-    'Content-Type': 'application/json',
-  };
 
-  console.log(filters, 'filters');
+export const calculateCarRent = (city_mpg: number, year: number) => {
+  const basePricePerDay = 50; // Base rental price per day in dollars
+  const mileageFactor = 0.1; // Additional rate per mile driven
+  const ageFactor = 0.05; // Additional rate per year of vehicle age
 
-  // Construct the query string using URLSearchParams
-  const searchParams = new URLSearchParams();
+  // Calculate additional rate based on mileage and age
+  const mileageRate = city_mpg * mileageFactor;
+  const ageRate = (new Date().getFullYear() - year) * ageFactor;
 
-  if (manufacturer) searchParams.append('make', manufacturer);
-  if (year) searchParams.append('year', year.toString());
-  if (model) searchParams.append('model', model);
-  if (limit) searchParams.append('limit', limit.toString());
-  if (fuel) searchParams.append('fuel_type', fuel);
+  // Calculate total rental rate per day
+  const rentalRatePerDay = basePricePerDay + mileageRate + ageRate;
 
-  const url = `https://api.api-ninjas.com/v1/cars?${searchParams.toString()}`;
-
-  console.log(url, 'url');
-
-  try {
-    const response = await fetch(url, { headers });
-
-    // Check if the response is ok
-    if (!response.ok) {
-      console.error('API request failed with status:', response.status);
-      return [];
-    }
-
-    const result = await response.json();
-
-    // Log the result to see what is being returned
-    console.log(result, 'result');
-
-    return result;
-  } catch (error) {
-    console.error('Error fetching cars:', error);
-    return [];
-  }
-}
-
+  return rentalRatePerDay.toFixed(0);
+};
 
 
 export const updateSearchParams = (type: string, value: string) => {

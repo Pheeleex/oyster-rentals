@@ -56,3 +56,14 @@ export interface SearchManuFacturerProps {
   export interface HomeProps {
     searchParams: FilterProps;
   }
+
+  export interface CarSpecProps {
+    Drive: string,
+    FuelType: string,
+    Make: String,
+    Model: String,
+    Transmission: String
+    ImagePath?: string
+    id: string;
+    images?: string[];
+  }

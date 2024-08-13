@@ -99,7 +99,7 @@ const CarDetails = ({
                                         </div>
                                     </div>
                                     <div>
-                                        <CarBookingForm />
+                                        <CarBookingForm carId={car.id} />
                                     </div>
                                 </DialogPanel>
                             </TransitionChild>

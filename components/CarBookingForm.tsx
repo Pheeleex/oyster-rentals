@@ -1,8 +1,70 @@
-import React from 'react'
+'use client'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import React, { useState } from 'react'
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DateTimeRangePicker } from '@mui/x-date-pickers-pro';
+import CustomButton from './CustomButton';
+import { Dayjs } from 'dayjs';
 
-const CarBookingForm = () => {
+
+interface BookingDetails {
+    pickupDate: Dayjs | null;
+  dropoffDate: Dayjs| null;
+}
+
+interface CarBookingFormProps {
+    carId: string;  // Accepting carId as a prop
+  }
+
+const CarBookingForm: React.FC<CarBookingFormProps> = ({carId}) => {
+    const [bookingDetails, setBookingDetails] = useState<BookingDetails>({
+        pickupDate: null,
+        dropoffDate: null,
+      });
+
+      const handleDateChange = (dates: [Dayjs | null, Dayjs | null]) => {
+        const [pickupDate, dropoffDate] = dates;
+        setBookingDetails({ pickupDate, dropoffDate });
+    };
+
+    const handleConfirmBooking = () => {
+        if (bookingDetails.pickupDate && bookingDetails.dropoffDate) {
+            // Save to local storage
+            const confirmedDates = JSON.stringify({
+                carId,
+                pickupDate: bookingDetails.pickupDate.toISOString(),
+                dropoffDate: bookingDetails.dropoffDate.toISOString(),
+            })
+            console.log(confirmedDates)
+            localStorage.setItem('carBookingDetails', confirmedDates );
+            alert('Booking details saved!');
+        } else {
+            alert('Please select both pickup and dropoff dates.');
+        }
+    };
+
   return (
-    <div>CarBookingForm</div>
+    
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={['DateTimeRangePicker']}>
+        <DateTimeRangePicker 
+            localeText={{ start: 'Check-in', end: 'Check-out' }}
+            value={[bookingDetails.pickupDate, bookingDetails.dropoffDate]}
+            onChange={handleDateChange}
+            />
+      </DemoContainer>
+      <CustomButton
+                    title='Confirm Booking'
+                    containerStyles='w-1/2 py-[10px]
+                    rounded-full bg-primary-blue mt-4'
+                    textStyles="text-white text-[14px] leading-[17px]
+                    font-bold"
+                    btnType='button'
+                    rightIcon="/right-arrow.svg"
+                    handleClick={handleConfirmBooking}
+                    />
+    </LocalizationProvider>   
   )
 }
 

@@ -18,6 +18,11 @@ const CarCard = ({ car }: CarCardProps) => {
 
     const {Drive, FuelType, Make, Model, Transmission } = car;
 
+    const popUp = () => {
+        console.log('you no go show ke?')
+        setIsOpen(true)
+    }
+
     
   return (
     <div className="car-card group">
@@ -51,7 +56,7 @@ const CarCard = ({ car }: CarCardProps) => {
                     <Image src="/steering-wheel.svg" width={20}
                     height={20} alt='steering wheel' />
                     <p className='text -[14px]'>
-                        {Transmission === 'a' ? 'Automatic'
+                        {Transmission === 'Automatic' ? 'Automatic'
                         : 'Manual'}
                     </p>
                 </div>
@@ -81,7 +86,7 @@ const CarCard = ({ car }: CarCardProps) => {
                     font-bold"
                     btnType='button'
                     rightIcon="/right-arrow.svg"
-                    handleClick={() =>setIsOpen(true)}
+                    handleClick={popUp}
                     />
             </div>
         </div>

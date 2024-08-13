@@ -22,7 +22,7 @@ const Hero = () => {
               btnType='button'
               containerStyles="bg-primary-blue text-white
               rounded-full mt-10"
-              handleClick={() => {handleScroll}}
+              handleClick={handleScroll}
             />
         </div>
         <div className="hero__image-container">

@@ -2,11 +2,11 @@
 import { CarSpecProps } from "@/types";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
-import { Fragment, useState } from "react";
-import Calendar from 'react-calendar';
+import { Fragment, useEffect, useState } from "react";
 import 'react-calendar/dist/Calendar.css'; 
 import CustomButton from "./CustomButton";
 import CarBookingForm from "./CarBookingForm";
+import { getCarBookingDetails } from "@/utils";
 
 interface CarDetailsProps {
     isOpen: boolean;
@@ -15,17 +15,34 @@ interface CarDetailsProps {
 }
 
 const CarDetails = ({
-    isOpen, closeModal, car
+    isOpen, 
+    closeModal, 
+    car, 
 }: CarDetailsProps) => {
-    
+    const [bookingStatus, setBookingStatus] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            // Retrieve booking details from local storage
+            const savedBookingDetails = localStorage.getItem('carBookingDetails');
+            if (savedBookingDetails) {
+                const bookingDetails = JSON.parse(savedBookingDetails);
+                if (bookingDetails.carId === car.id) {
+                    // Booking details match the current car
+                    setBookingStatus(`This car has been booked from ${new Date(bookingDetails.pickupDate).toLocaleDateString()} to ${new Date(bookingDetails.dropoffDate).toLocaleDateString()}`);
+                } else {
+                    setBookingStatus(null);
+                }
+            } else {
+                setBookingStatus(null);
+            }
+        }
+    }, [isOpen, car.id]);
 
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div"
-                    className="relative z-10"
-                    onClose={closeModal}>
-                    
+                <Dialog as="div" className="relative z-10" onClose={closeModal}>
                     <TransitionChild
                         as={Fragment}
                         enterFrom="opacity-0"
@@ -100,6 +117,11 @@ const CarDetails = ({
                                     </div>
                                     <div>
                                         <CarBookingForm carId={car.id} />
+                                        {bookingStatus && (
+                                            <p className="mt-4 text-red-500">
+                                                {bookingStatus}
+                                            </p>
+                                        )}
                                     </div>
                                 </DialogPanel>
                             </TransitionChild>

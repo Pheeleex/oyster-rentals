@@ -8,7 +8,7 @@ import CustomButton from './CustomButton';
 import { Dayjs } from 'dayjs';
 
 
-interface BookingDetails {
+export interface BookingDetails {
     pickupDate: Dayjs | null;
   dropoffDate: Dayjs| null;
 }
@@ -36,13 +36,15 @@ const CarBookingForm: React.FC<CarBookingFormProps> = ({carId}) => {
                 pickupDate: bookingDetails.pickupDate.toISOString(),
                 dropoffDate: bookingDetails.dropoffDate.toISOString(),
             })
-            console.log(confirmedDates)
+            console.log(`booking_${carId}`,confirmedDates)
             localStorage.setItem('carBookingDetails', confirmedDates );
             alert('Booking details saved!');
         } else {
             alert('Please select both pickup and dropoff dates.');
         }
     };
+
+    
 
   return (
     

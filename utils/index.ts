@@ -1,4 +1,6 @@
+
 import { FilterProps } from "@/types";
+import dayjs from "dayjs";
 
 
 
@@ -63,3 +65,36 @@ export const isCarBooked = (carId: string, startDate: Date, endDate: Date): bool
     );
   });
 };
+
+export const getCarBookingDetails = () => {
+  const bookingDetails = localStorage.getItem('carBookingDetails')
+  if(bookingDetails){
+    try {
+      return JSON.parse(bookingDetails)
+    } catch (error) {
+      console.error('Error parsing booking details:', error);
+      return null;
+    }
+  }
+}
+
+
+// utils/signUpSchema.ts
+import { z } from "zod";
+
+export const signUpSchema = z
+  .object({
+    email: z.string().email(),
+    username: z.string().min(1, "Username is required"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
+  });
+
+// Type for the parsed schema
+export type SignUpSchema = z.infer<typeof signUpSchema>;
+
+

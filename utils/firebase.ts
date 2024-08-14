@@ -26,41 +26,56 @@ export const storage = getStorage(app)
 export const db = getFirestore(app)
 
 
-const fetchCars = async (): Promise <CarSpecProps[]> => {
-    try {
+const fetchCars = async (): Promise<CarSpecProps[]> => {
+  try {
       const carCollectionRef = collection(db, 'Cars');
       const orderedQuery = query(carCollectionRef, orderBy('id'));
       const querySnapshot = await getDocs(orderedQuery);
-      const carData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as CarSpecProps[];
-     
-  console.log(carData, 'data')
-      const carWithImages = await Promise.all(carData.map(async (car) => {
-        let images: string[] = [];
-        const imagePath = car.ImagePath || car.id;  // Check for imagePath, default to property.id if not available
-        const imageListRef = ref(storage, `${imagePath}/`);
-        
-  
-        try {
-          const imageList = await listAll(imageListRef);
-          images = await Promise.all(imageList.items.map(async (item) => {
-            console.log(imageList, 'image')
-            const url = await getDownloadURL(item);
-            return url;
-          }));
-        } catch (error) {
-          console.error(`Error fetching images for property ${car.id}:`, error);
-        }
-  
-        return { ...car, images };
-      }));
-  
-      
-     
+      const carData = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+      })) as CarSpecProps[];
+
+      console.log(carData, 'Fetched car data');
+
+      const carWithImages = await Promise.all(
+          carData.map(async (car) => {
+              let images: string[] = [];
+              const imagePath = car.ImagePath || car.id;
+
+              console.log(`Fetching images for car: ${car.id}, using path: ${imagePath}`);
+
+              const imageListRef = ref(storage, `${imagePath}/`);
+              
+              try {
+                  const imageList = await listAll(imageListRef);
+                  console.log(`Images found for car ${car.id}:`, imageList.items);
+
+                  images = await Promise.all(
+                      imageList.items.map(async (item) => {
+                          const url = await getDownloadURL(item);
+                          console.log(`Image URL for ${item.name}:`, url);
+                          return url;
+                      })
+                  );
+              } catch (error) {
+                  console.error(`Error fetching images for car ${car.id}:`, error);
+              }
+
+              return { ...car, images };
+          })
+      );
+
+      console.log('Car data with images:', carWithImages);
       return carWithImages;
-    } catch (error) {
-      console.error('Error fetching properties:', error);
+  } catch (error) {
+      console.error('Error fetching cars:', error);
       return [];
-    }
-  };
-  
-  export default fetchCars;
+  }
+};
+export default fetchCars
+
+
+export const addCars = () => {
+
+}

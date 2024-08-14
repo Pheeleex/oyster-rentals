@@ -1,6 +1,4 @@
 "use client"
-
-import { calculateCarRent } from '@/utils'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import CustomButton from './CustomButton'
@@ -12,17 +10,20 @@ interface CarCardProps {
     car: CarSpecProps
 }
 
+
+
 const CarCard = ({ car }: CarCardProps) => {
     const [isOpen, setIsOpen] = useState(false) 
 
 
-    const {Drive, FuelType, Make, Model, Transmission } = car;
+    const {Drive, FuelType, Make, Model, Transmission, images } = car;
 
-    const popUp = () => {
+    const popUp = (carId: string) => {
         console.log('you no go show ke?')
         setIsOpen(true)
     }
 
+    const carImage = images && images.length > 0 ? images[0] : '/hero.png';
     
   return (
     <div className="car-card group">
@@ -44,7 +45,7 @@ const CarCard = ({ car }: CarCardProps) => {
         </p>
 
         <div className='relative w-full h-40 my-3 object-contain'>
-            <Image src="/hero.png"
+            <Image src={carImage}
                     alt={`car${Model}`}
                     fill priority className='object-contain' />
         </div>
@@ -86,7 +87,7 @@ const CarCard = ({ car }: CarCardProps) => {
                     font-bold"
                     btnType='button'
                     rightIcon="/right-arrow.svg"
-                    handleClick={popUp}
+                    handleClick={() => popUp('carId')}
                     />
             </div>
         </div>

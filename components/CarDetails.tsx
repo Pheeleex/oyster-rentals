@@ -12,12 +12,14 @@ interface CarDetailsProps {
     isOpen: boolean;
     closeModal: () => void;
     car: CarSpecProps;
+    onBookingStatusChange: (status: string | null) => void;
 }
 
 const CarDetails = ({
     isOpen, 
     closeModal, 
-    car, 
+    car,
+    onBookingStatusChange
 }: CarDetailsProps) => {
     const [bookingStatus, setBookingStatus] = useState<string | null>(null);
 
@@ -29,7 +31,9 @@ const CarDetails = ({
                 const bookingDetails = JSON.parse(savedBookingDetails);
                 if (bookingDetails.carId === car.id) {
                     // Booking details match the current car
-                    setBookingStatus(`This car has been booked from ${new Date(bookingDetails.pickupDate).toLocaleDateString()} to ${new Date(bookingDetails.dropoffDate).toLocaleDateString()}`);
+                    const status = `This car has been booked from ${new Date(bookingDetails.pickupDate).toLocaleDateString()} to ${new Date(bookingDetails.dropoffDate).toLocaleDateString()}`;
+                    setBookingStatus(status);
+                    onBookingStatusChange(status);
                 } else {
                     setBookingStatus(null);
                 }

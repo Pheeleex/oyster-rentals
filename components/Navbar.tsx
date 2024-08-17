@@ -1,10 +1,14 @@
+'use client'
 import Link from "next/link";
 import Image from "next/image";
 import CustomButton from "./CustomButton";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-;
 
-const NavBar = () => (
+const NavBar = () => {
+  const router = useRouter()
+  return(
   <header className='w-full  absolute top-0 z-10'>
     <nav className='max-w-[1440px] mx-auto flex 
       justify-between items-center sm:px-16 px-6 py-4 '>
@@ -23,9 +27,11 @@ const NavBar = () => (
         title='Sign in'
         btnType='button'
         containerStyles='text-primary-blue rounded-full bg-white min-w-[130px]'
+        handleClick={() => router.push('./admin/SignUp')
+        }
       />
     </nav>
   </header>
-);
+)};
 
 export default NavBar;

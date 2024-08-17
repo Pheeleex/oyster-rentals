@@ -1,11 +1,11 @@
 'use client'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DateTimeRangePicker } from '@mui/x-date-pickers-pro';
 import CustomButton from './CustomButton';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 
 export interface BookingDetails {
@@ -22,6 +22,19 @@ const CarBookingForm: React.FC<CarBookingFormProps> = ({carId}) => {
         pickupDate: null,
         dropoffDate: null,
       });
+      const [bookedRanges, setBookedRanges] = useState<Array<[Dayjs, Dayjs]>>([]);
+      useEffect(() => {
+        // Retrieve booked dates from local storage
+        const savedBookingDetails = localStorage.getItem('carBookingDetails');
+        if (savedBookingDetails) {
+            const parsedDetails = JSON.parse(savedBookingDetails);
+            if (parsedDetails.carId === carId) {
+                const pickupDate = dayjs(parsedDetails.pickupDate);
+                const dropoffDate = dayjs(parsedDetails.dropoffDate);
+                setBookedRanges([[pickupDate, dropoffDate]]);
+            }
+        }
+    }, [carId]);
 
       const handleDateChange = (dates: [Dayjs | null, Dayjs | null]) => {
         const [pickupDate, dropoffDate] = dates;

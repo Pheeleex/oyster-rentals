@@ -14,10 +14,17 @@ interface CarCardProps {
 
 const CarCard = ({ car }: CarCardProps) => {
     const [isOpen, setIsOpen] = useState(false) 
-
+    const [buttonText, setButtonText] = useState('Book Now');
 
     const {Drive, FuelType, Make, Model, Transmission, images } = car;
 
+    const handleBookingStatusChange = (status: string | null) => {
+        if (status) {
+            setButtonText('Check Availability');
+        } else {
+            setButtonText('Book Now');
+        }
+    };
     const popUp = (carId: string) => {
         console.log('you no go show ke?')
         setIsOpen(true)
@@ -80,7 +87,7 @@ const CarCard = ({ car }: CarCardProps) => {
             </div>
             <div className='car-card__btn-container'>
                 <CustomButton
-                    title='Book now'
+                    title={buttonText}
                     containerStyles='w-full py-[16px]
                     rounded-full bg-primary-blue'
                     textStyles="text-white text-[14px] leading-[17px]
@@ -94,7 +101,9 @@ const CarCard = ({ car }: CarCardProps) => {
        
             <CarDetails isOpen={isOpen}
             closeModal={() => setIsOpen(false)}
-            car={car} /> 
+            car={car}
+            onBookingStatusChange={handleBookingStatusChange}
+            /> 
        
       </div>
   )

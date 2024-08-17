@@ -9,13 +9,26 @@ import fetchCars from "@/utils/firebase";
 import Image from "next/image";
 
 export default async function Home({searchParams}: HomeProps) {
-  const allCars = await fetchCars()
+  const response = await fetchCars({
+    manufacturer: searchParams.manufacturer || '',
+    limit: searchParams.limit || 10,
+    model: searchParams.model || '',
+  })
 
+  const allCars = response.cars
  console.log(allCars, 'cars')
 
 
  const isDataEmpty = !Array.isArray(allCars) || 
  allCars.length < 1 || !allCars
+
+ if(isDataEmpty){
+  console.log('baba data no dey')
+ }
+ else{
+  console.log('data choke')
+ }
+ console.log(searchParams, 'params')
 
   return (
       <main className="overflow-hidden">
@@ -43,7 +56,6 @@ export default async function Home({searchParams}: HomeProps) {
                       ))
                     }
                  </div>
-
                  <ShowMore 
               pageNumber={(searchParams.limit || 10) / 10}
               isNext={(searchParams.limit || 10) > allCars.length}

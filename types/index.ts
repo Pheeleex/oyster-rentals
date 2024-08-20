@@ -48,7 +48,9 @@ export interface SearchManuFacturerProps {
   export interface FilterProps{
     manufacturer: string,
     limit: number,
-    model: string
+    model: string,
+    year: number,
+    fuel: string
   }
 
   export interface HomeProps {

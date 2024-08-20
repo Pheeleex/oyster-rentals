@@ -6,16 +6,18 @@ import ShowMore from "@/components/ShowMore";
 import { fuels, yearsOfProduction } from "@/constants";
 import { HomeProps } from "@/types";
 import fetchCars from "@/utils/firebase";
-import Image from "next/image";
+
 
 export default async function Home({searchParams}: HomeProps) {
-  const response = await fetchCars({
+ const response = await fetchCars({
     manufacturer: searchParams.manufacturer || '',
     limit: searchParams.limit || 10,
     model: searchParams.model || '',
+    year: searchParams.year || 2022,
+    fuel: searchParams.fuel || ''
   })
 
-  const allCars = response.cars
+ const allCars = response.cars
  console.log(allCars, 'cars')
 
 
@@ -57,8 +59,8 @@ export default async function Home({searchParams}: HomeProps) {
                     }
                  </div>
                  <ShowMore 
-              pageNumber={(searchParams.limit || 10) / 10}
-              isNext={(searchParams.limit || 10) > allCars.length}
+                  pageNumber={(searchParams.limit || 10) / 10}
+                  isNext={(searchParams.limit || 10) > allCars.length}
             />
               </section>
             ) : (

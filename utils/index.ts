@@ -1,7 +1,49 @@
+import { CarProps, FilterProps } from "@/types";
 
-import { FilterProps } from "@/types";
-import dayjs from "dayjs";
 
+export async function fetchCarsRA(filters: FilterProps) {
+  const { manufacturer, year, model, limit, fuel } = filters;
+
+  const headers = {
+    'X-Api-Key': 'jZ0FfTUdKtAG3uVmI+3wAA==4DI9jthK9V9MWG7V',
+    'Content-Type': 'application/json',
+  };
+
+  console.log(filters, 'filters');
+
+  // Construct the query string using URLSearchParams
+  const searchParams = new URLSearchParams();
+
+  if (manufacturer) searchParams.append('make', manufacturer);
+  if (year) searchParams.append('year', year.toString());
+  if (model) searchParams.append('model', model);
+  if (limit) searchParams.append('limit', limit.toString());
+  if (fuel) searchParams.append('fuel_type', fuel);
+
+  const url = `https://api.api-ninjas.com/v1/cars?${searchParams.toString()}`;
+
+  console.log(url, 'url');
+
+  try {
+    const response = await fetch(url, { headers });
+
+    // Check if the response is ok
+    if (!response.ok) {
+      console.error('API request failed with status:', response.status);
+      return [];
+    }
+
+    const result = await response.json();
+
+    // Log the result to see what is being returned
+    console.log(result, 'result');
+
+    return result;
+  } catch (error) {
+    console.error('Error fetching cars:', error);
+    return [];
+  }
+}
 
 
 export const calculateCarRent = (city_mpg: number, year: number) => {
@@ -78,23 +120,20 @@ export const getCarBookingDetails = () => {
   }
 }
 
+export const generateCarImageUrl = (car: CarProps, angle?: string) => {
+  const url = new URL("https://cdn.imagin.studio/getimage");
+  const { make, model, year } = car;
 
-// utils/signUpSchema.ts
-import { z } from "zod";
+  url.searchParams.append('customer', process.env.NEXT_PUBLIC_IMAGIN_API_KEY || '');
+  url.searchParams.append('make', make);
+  url.searchParams.append('modelFamily', model.split(" ")[0]);
+  url.searchParams.append('zoomType', 'fullscreen');
+  url.searchParams.append('modelYear', `${year}`);
+  // url.searchParams.append('zoomLevel', zoomLevel);
+  url.searchParams.append('angle', `${angle}`);
 
-export const signUpSchema = z
-  .object({
-    email: z.string().email(),
-    username: z.string().min(1, "Username is required"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
-  });
+  return `${url}`;
+} 
 
-// Type for the parsed schema
-export type SignUpSchema = z.infer<typeof signUpSchema>;
 
 

@@ -4,6 +4,7 @@ import fetchCars from '@/utils/firebase';
 import React, { useEffect, useState } from 'react';
 import CarCard from './CarCard';
 
+
 interface CarTradeProps {
   initialLimit: number;
   make: string,
@@ -55,7 +56,11 @@ const CarTrade = ({
         <section>
           <div className="home__cars-wrapper">
             {allCars?.map((car, index) => (
-              <CarCard car={car} key={index} />
+              <CarCard 
+                car={car} 
+                key={index}
+                buttonTitle='More Details'
+                showBookingForm ={false} />
             ))}
           </div>
         </section>

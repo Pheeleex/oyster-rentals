@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { Dispatch, MouseEventHandler, SetStateAction } from "react";
 
 export interface CustomButtonProps{
     title: string;
@@ -66,4 +66,7 @@ export interface SearchManuFacturerProps {
     ImagePath?: string
     id: string;
     images?: string[];
+    imageFiles?: File []
   }
+
+  export type SetCars = Dispatch<SetStateAction<CarSpecProps[]>>

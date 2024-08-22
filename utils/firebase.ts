@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes, } from "firebase/storage"
 import { Firestore, addDoc, collection, deleteDoc, doc, getFirestore, 
   updateDoc,query, getDocs, orderBy, where, startAfter, limit as firestoreLimit } from "firebase/firestore"
-import { CarSpecProps, FilterProps } from "@/types";
+import { CarSpecProps, FilterProps, SetCars } from "@/types";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -58,7 +58,7 @@ Promise<{ cars: CarSpecProps[], lastVisible: any }> => {
      }
   
       const querySnapshot = await getDocs(carsQuery);
-     console.log(carsQuery, 'query')
+     /*console.log(carsQuery, 'query')*/
      console.log(`Number of cars found: ${querySnapshot.docs.length}`);
       // Capture the last visible document for the next page
       const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
@@ -98,6 +98,76 @@ Promise<{ cars: CarSpecProps[], lastVisible: any }> => {
   };
   
   export default fetchCars;
-export const addCars = () => {
 
+
+export const addCars = async(car: CarSpecProps, imageFiles: File [], ImagePath: string): Promise<void> => {
+  try {
+    const carRef = collection(db, 'Cars')
+    const { imageFiles: removedImageFiles, ...carData } = car;
+
+    const docRef = await addDoc(carRef, carData)
+if(imageFiles && imageFiles.length > 0){
+  for(let i=0; i < imageFiles.length; i++ ){
+    const file = imageFiles[i];
+    const storageRef = ref(storage, `${ImagePath}/${ImagePath}${i + 1}`);
+    await uploadBytes(storageRef, file);
+  }
+}
+    console.log('Property and images added successfully');
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+export const updateCars = async(carId: string, updatedData: Partial<CarSpecProps>): Promise<void> => {
+try {
+  console.log('Updating property with ID:', carId);
+    console.log('Updated Data:', updatedData);
+
+    const CarRef = doc(db, 'Cars', carId);
+    await updateDoc(CarRef, updatedData);
+    console.log('Property updated successfully', carId);
+} catch (error) {
+  console.error('Error updating car: ', error);
+    throw error;
+}
+}
+
+
+// Delete property function
+/*export const deleteProperty = async (id: string, ImagePath: string, setProperties: SetProperties): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, '2309', id));
+
+    // Delete associated property image from Firebase storage
+    const imageListRef = ref(storage, `${ImagePath}/`);
+    const imageList = await listAll(imageListRef);
+    const deletePromises = imageList.items.map((item) => deleteObject(ref(storage, item.fullPath)));
+
+    await Promise.all(deletePromises);
+
+    setProperties((prevProperties) => prevProperties.filter((prop) => prop.id !== id));
+    console.log(`Property with id ${id} deleted successfully`);
+  } catch (error) {
+    console.error(`Error deleting property with id ${id}:`, error);
+  }
+}; */
+
+export const deleteCars = async(id: string, ImagePath:string, setCars:SetCars): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, 'Cars', id))
+
+    //Delete associated property image from Firebase storage
+    const imageListRef = ref(storage, `${ImagePath}/`);
+    const imageList = await listAll(imageListRef);
+    const deletePromises = imageList.items.map((item) => deleteObject(ref(storage, item.fullPath)));
+
+    await Promise.all(deletePromises);
+
+    setCars((prevCars) => prevCars.filter((car) => car.id !== id ));
+    console.log(`Car with id ${id} deleted successfully`)
+  } catch (error) {
+    console.error(`Error deleting car with id ${id}:`, error)
+  }
 }

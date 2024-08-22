@@ -1,28 +1,101 @@
 'use client'
 
 import { CarSpecProps } from "@/types"
-import { auth } from "@/utils/firebase"
+import { addCars, auth, storage, updateCars } from "@/utils/firebase"
 import { signOut } from "firebase/auth"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+import { v4 as uuidv4 } from 'uuid';
+import EditCars from "./EditCars"
+import { useRef, useState } from "react"
+import { ref, uploadBytes } from "firebase/storage"
 
 
 
 const page = () => {
     const router = useRouter()
+    const [isEditing, setIsEditing] = useState(false)
+    const formRef = useRef<HTMLDivElement>(null);
     const {register,
             formState:{errors},
             handleSubmit,
+            setValue,
+            setError,
             reset,
     } = useForm<CarSpecProps>()
 
+    const handleEdit = (data: CarSpecProps) => {
+      console.log(data, 'CarspecProps Data')
+      Object.keys(data).forEach((key) => {
+        const field = key as keyof CarSpecProps
+        setValue(field, data[field])
+        console.log(data[field], 'fields')
+      });
+      setValue('imageFiles', []);
+      setIsEditing(true)
+      formRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+
     const onSubmit = async(data: CarSpecProps) => {
-            console.log(data)
-            reset()
+      if(isEditing){
+        // Update form data using new values entered
+      const updatedData: Partial<CarSpecProps> = {};
+
+        for (const [key, value] of Object.entries(data)) {
+          if (value !== undefined && value !== null) {
+            updatedData[key as keyof CarSpecProps] = value as any;
+          }
+        }
+
+        if (Array.isArray(data.imageFiles) && data.imageFiles?.length > 0) {
+          if (!data.ImagePath) {
+            setError('ImagePath', {
+              type: 'server',
+              message: 'Image path must be provided if uploading new images.'
+            });
+            return;
+          }
+          updatedData.ImagePath = data.ImagePath;
+          const imageFilesArray = Array.from(data.imageFiles);
+
+
+          await Promise.all(
+            imageFilesArray.map((file, index) => {
+              const storageRef = ref(storage, `${data.ImagePath}/${data.ImagePath}${index + 1}`);
+              return uploadBytes(storageRef, file);
+            })
+          )
+        }
+        else {
+          updatedData.ImagePath = data.ImagePath;
+        }
+        // Remove imageFiles from updatedData before updating Firestore
+      delete updatedData.imageFiles;
+        await updateCars(data.id!, updatedData);
+        reset()
+      }
+            else{
+              console.log(data)
+            const carData = {
+                          ...data, 
+                          id: uuidv4()
+                        }
+                        try {
+                          // Pass imageFiles and ImagePath to addCars, but remove them from carData
+                          await addCars(carData, data.imageFiles || [], data.ImagePath || '');
+                          // Reset the form after submission
+                          reset();
+                          // Redirect or give feedback to the user
+                        } catch (error) {
+                          console.error('Error adding car:', error);
+                        }
+            }
+                      
     }
     return(
-        <div className="flex justify-center items-center">
-            <div className="bg-blue-400 p-8 rounded-lg shadow-md w-full md:w-[34rem] lg:w-[40rem] mt-48 ">
+        <div className="flex flex-col justify-center items-center">
+            <div ref={formRef} className="bg-blue-400 p-8 rounded-lg shadow-md w-full md:w-[34rem] lg:w-[40rem] mt-48 ">
              <h2 className="text-xl font-semibold mb-4">Add Cars</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
@@ -40,7 +113,7 @@ const page = () => {
           <div className="mb-4">
             <label className="block text-blue-900 mb-2">Model</label>
             <input
-              {...register("Make", { required: 'Brand Model is required' })}
+              {...register("Model", { required: 'Brand Model is required' })}
               type="text"
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
@@ -88,12 +161,13 @@ const page = () => {
           <div className="mb-4">
             <label className="block text-blue-900 mb-2">Images</label>
             <input
-              {...register("images", { required: 'Please add Images' })}
+              {...register("imageFiles", { required: 'Please add Images' })}
               type="file"
+              multiple
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
-            {errors.images && (
-              <p className="text-blue-900">{errors.images?.message}</p>
+            {errors.imageFiles && (
+              <p className="text-blue-900">{errors.imageFiles.message}</p>
             )}
           </div>
 
@@ -111,6 +185,7 @@ const page = () => {
           <button className="bg-white text-blue-400 p-2 rounded">Submit</button>
             </form>
         </div>
+            <EditCars onEdit={handleEdit} />
         </div>
     )
 } 

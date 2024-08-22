@@ -7,24 +7,20 @@ import { CarSpecProps } from '@/types'
 
 
 interface CarCardProps {
-    car: CarSpecProps
+    car: CarSpecProps,
+    buttonTitle: string,
+    showBookingForm: boolean
+    detailsOpen: boolean
 }
 
 
 
-const CarCard = ({ car }: CarCardProps) => {
+const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen }: CarCardProps) => {
     const [isOpen, setIsOpen] = useState(false) 
-    const [buttonText, setButtonText] = useState('Book Now');
+
 
     const {Drive, FuelType, Make, Model, Transmission, images } = car;
 
-    const handleBookingStatusChange = (status: string | null) => {
-        if (status) {
-            setButtonText('Check Availability');
-        } else {
-            setButtonText('Book Now');
-        }
-    };
     const popUp = (carId: string) => {
         console.log('you no go show ke?')
         setIsOpen(true)
@@ -87,7 +83,7 @@ const CarCard = ({ car }: CarCardProps) => {
             </div>
             <div className='car-card__btn-container'>
                 <CustomButton
-                    title={buttonText}
+                    title={buttonTitle}
                     containerStyles='w-full py-[16px]
                     rounded-full bg-primary-blue'
                     textStyles="text-white text-[14px] leading-[17px]
@@ -99,10 +95,16 @@ const CarCard = ({ car }: CarCardProps) => {
             </div>
         </div>
        
-            <CarDetails isOpen={isOpen}
-            closeModal={() => setIsOpen(false)}
-            car={car}
-            /> 
+           {
+            detailsOpen && (
+                <CarDetails isOpen={isOpen}
+                closeModal={() => setIsOpen(false)}
+                showBookingForm={showBookingForm}
+                bookingStatus=''
+                car={car}
+                /> 
+            )
+           }
        
       </div>
   )

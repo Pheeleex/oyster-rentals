@@ -54,7 +54,11 @@ export default async function Home({searchParams}: HomeProps) {
                     {
                       allCars?.map((car, index) => (
                         <CarCard car={car}
-                          key={index} />
+                          key={index}
+                          buttonTitle="Book Test Drive"
+                          showBookingForm={true}
+                          detailsOpen={true}
+                           />
                       ))
                     }
                  </div>

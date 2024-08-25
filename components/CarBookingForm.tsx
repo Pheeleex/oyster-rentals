@@ -10,7 +10,7 @@ export default function BasicDateTimePicker() {
       <DemoContainer components={['DateTimePicker']}>
         <DateTimePicker label="Basic date time picker" />
       </DemoContainer>
-      <button>Save Date</button>
+      <button className='bg-blue-700 text-white p-2 rounded my-4'>Save Date</button>
     </LocalizationProvider>
   );
 }

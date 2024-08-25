@@ -9,7 +9,7 @@ const CarIcon = ({ width = "44px", height = "44px" }) => {
             height: "100%",
             shapeRendering: "geometricPrecision",
             textRendering: "geometricPrecision",
-            imageRendering: "optimizeQuality",
+            imageRendering: "auto",
             fillRule: "evenodd",
             clipRule: "evenodd",
           }}

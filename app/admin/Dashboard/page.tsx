@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import EditCars from "./EditCars"
 import { useRef, useState } from "react"
 import { ref, uploadBytes } from "firebase/storage"
+import { destroyCookie } from "nookies"
 
 
 
@@ -16,6 +17,19 @@ const page = () => {
     const router = useRouter()
     const [isEditing, setIsEditing] = useState(false)
     const formRef = useRef<HTMLDivElement>(null);
+
+    const handleSignOut = async() => {
+      sessionStorage.removeItem('admin')
+      destroyCookie(null, 'admin', {
+        path: '/',
+        sameSite: 'None', // Ensures the cookie is properly destroyed
+        secure: true, // Ensures the cookie is only destroyed over HTTPS
+      })
+      await signOut(auth)
+      router.push('/')
+      console.log('auth')
+    }
+
     const {register,
             formState:{errors},
             handleSubmit,
@@ -95,7 +109,13 @@ const page = () => {
     }
     return(
         <div className="flex flex-col justify-center items-center">
-            <div ref={formRef} className="bg-blue-400 p-8 rounded-lg shadow-md w-full md:w-[34rem] lg:w-[40rem] mt-48 ">
+         <div className="mt-32 flex flex-col justify-center items-center">
+          <h1>Hello</h1>
+          <button className="bg-red-700 text-white p-2 rounded cursor-pointer" onClick={handleSignOut}>
+            SignOut
+          </button>
+          </div>
+            <div ref={formRef} className="bg-blue-400 p-8 rounded-lg shadow-md w-full md:w-[34rem] lg:w-[40rem] mt-12 ">
              <h2 className="text-xl font-semibold mb-4">Add Cars</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">

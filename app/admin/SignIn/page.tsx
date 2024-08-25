@@ -4,12 +4,15 @@ import { useRouter } from 'next/navigation';
 import { auth } from '@/utils/firebase';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { destroyCookie, setCookie } from 'nookies';
 
 type Inputs = {
   error: string,
   email: string,
   password: string
 }
+
+
 
 const SignIn = () => {
   const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
@@ -31,8 +34,13 @@ const SignIn = () => {
       await signInWithEmailAndPassword(email, password);
 
       if (user) {
-        sessionStorage.setItem('user', JSON.stringify(user.user));
-        router.push('/');
+        sessionStorage.setItem('admin', JSON.stringify(user));
+        // Set the auth token in a cookie
+        setCookie(null, 'admin', JSON.stringify(user), {
+          maxAge: 30 * 24 * 60 * 60, // 30 days
+          path: '/',
+        });
+        router.push('./Dashboard');
       }else{
         if (error) {
           const errorMessage = error.message || "An error occurred";

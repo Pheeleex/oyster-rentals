@@ -12,7 +12,6 @@ import { ref, uploadBytes } from "firebase/storage"
 import { destroyCookie } from "nookies"
 
 
-
 const page = () => {
     const router = useRouter()
     const [isEditing, setIsEditing] = useState(false)
@@ -205,7 +204,13 @@ const page = () => {
           <button className="bg-white text-blue-400 p-2 rounded">Submit</button>
             </form>
         </div>
-            <EditCars onEdit={handleEdit} />
+            <EditCars onEdit={handleEdit}
+            initialLimit={10}
+            make=""
+            model=""
+            year={2022}
+            fuel=""
+            />
         </div>
     )
 } 

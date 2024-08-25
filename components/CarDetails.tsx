@@ -1,4 +1,4 @@
-import { CarSpecProps } from "@/types";
+import { CarProps, CarSpecProps } from "@/types";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
 import { Fragment } from "react";
@@ -8,7 +8,7 @@ import JoinUs from "./JoinUs";
 interface CarDetailsProps {
     isOpen: boolean;
     closeModal: () => void;
-    car: CarSpecProps;
+    car: CarSpecProps | CarProps;
     showBookingForm?: boolean; // New prop to conditionally render the booking form
     bookingStatus?: string; // New prop for booking status
 }
@@ -20,6 +20,11 @@ const CarDetails = ({
     showBookingForm = false,
     bookingStatus = '',
 }: CarDetailsProps) => {
+    // Type guard to determine if `car` is `CarSpecProps`
+    const isCarSpecProps = (car: CarSpecProps | CarProps): car is CarSpecProps => {
+        return (car as CarSpecProps).Make !== undefined;
+    };
+
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
@@ -62,38 +67,26 @@ const CarDetails = ({
                                     <div className='flex-1 flex flex-col gap-3'>
                                         <div className='relative w-full h-40 bg-pattern bg-cover bg-center rounded-lg'>
                                             <Image 
-                                                src={car.images ? car.images[0] : '/hero.png'}
-                                                alt={`car`}
-                                                fill priority 
+                                                src={isCarSpecProps(car) && car.images ? car.images[0] : '/hero.png'}
+                                                alt="car"
+                                                fill 
+                                                priority 
                                                 className='object-contain' 
                                             />
                                         </div>
 
                                         <div className='flex gap-3'>
-                                            <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
-                                                <Image 
-                                                    src={car.images ? car.images[1] : '/hero.png'}
-                                                    alt={`car`}
-                                                    fill priority 
-                                                    className='object-contain' 
-                                                />
-                                            </div>
-                                            <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
-                                                <Image 
-                                                    src={car.images ? car.images[2] : '/hero.png'}
-                                                    alt={`car`}
-                                                    fill priority 
-                                                    className='object-contain' 
-                                                />
-                                            </div>
-                                            <div className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
-                                                <Image 
-                                                    src={car.images ? car.images[3] : '/hero.png'}
-                                                    alt={`car`}
-                                                    fill priority 
-                                                    className='object-contain' 
-                                                />
-                                            </div>
+                                            {Array.from({ length: 3 }, (_, index) => (
+                                                <div key={index} className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
+                                                    <Image 
+                                                        src={isCarSpecProps(car) && car.images ? car.images[index + 1] : '/hero.png'}
+                                                        alt="car"
+                                                        fill 
+                                                        priority 
+                                                        className='object-contain' 
+                                                    />
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
 
@@ -110,24 +103,22 @@ const CarDetails = ({
                                     ) : (
                                         <div className="flex-1 flex flex-col gap-2">
                                             <h2 className='font-semibold text-xl capitalize'>
-                                                {car.Make} {car.Model}
+                                                {isCarSpecProps(car) ? `${car.Make} ${car.Model}` : 'Unknown Car'}
                                             </h2>
 
                                             <div className="mt-3 flex flex-wrap gap-4">
-                                                {
-                                                    Object.entries(car).map(
-                                                        ([key, value]) => (
-                                                            <div className='flex justify-between gap-5 w-full text-right' key={key} >
-                                                                <h4 className='text-grey capitalize'>
-                                                                    {key.split("_").join(" ")}
-                                                                </h4>
-                                                                <p className='text-black-100 font-semibold'>
-                                                                    {value}
-                                                                </p>
-                                                            </div>
-                                                        )
+                                                {Object.entries(car).map(
+                                                    ([key, value]) => (
+                                                        <div className='flex justify-between gap-5 w-full text-right' key={key}>
+                                                            <h4 className='text-grey capitalize'>
+                                                                {key.split("_").join(" ")}
+                                                            </h4>
+                                                            <p className='text-black-100 font-semibold'>
+                                                                {value}
+                                                            </p>
+                                                        </div>
                                                     )
-                                                }
+                                                )}
                                             </div>
                                         </div>
                                     )}

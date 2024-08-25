@@ -62,6 +62,7 @@ const Card = ({ car }: CarCardProps) => {
             containerStyles='w-full py-[16px] rounded-full bg-primary-blue'
             textStyles='text-white text-[14px] leading-[17px] font-bold'
             rightIcon='/right-arrow.svg'
+            btnType="button"
             handleClick={() => setIsOpen(true)}
           />
         </div>

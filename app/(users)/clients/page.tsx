@@ -47,7 +47,7 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col items-center justify-center">
       <header className="w-full bg-blue-200 text-white py-6 pt-10">
-        <div className="container mx-auto text-center">
+        <div className="container mx-auto text-center mt-12">
           <h1 className="text-3xl font-bold">Welcome, {userName}!</h1>
           <div className="mt-4 text-xl">
             <p>Your Range Rover Velar Awaits</p>

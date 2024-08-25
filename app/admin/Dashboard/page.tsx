@@ -106,7 +106,7 @@ const page = () => {
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
             {errors.Make && (
-              <p className="text-blue-900">{errors.Make.message}</p>
+              <p className="text-red-900">{errors.Make.message}</p>
             )}
           </div>
           
@@ -118,7 +118,7 @@ const page = () => {
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
             {errors.Make && (
-              <p className="text-blue-900">{errors.Make?.message}</p>
+              <p className="text-red-900">{errors.Make?.message}</p>
             )}
           </div>
 
@@ -130,7 +130,7 @@ const page = () => {
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
             {errors.Drive && (
-              <p className="text-blue-900">{errors.Drive?.message}</p>
+              <p className="text-red-900">{errors.Drive?.message}</p>
             )}
           </div>
 
@@ -142,7 +142,7 @@ const page = () => {
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
             {errors.FuelType && (
-              <p className="text-blue-900">{errors.FuelType?.message}</p>
+              <p className="text-red-900">{errors.FuelType?.message}</p>
             )}
           </div>
 
@@ -154,7 +154,7 @@ const page = () => {
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
             {errors.Transmission && (
-              <p className="text-blue-900">{errors.Transmission?.message}</p>
+              <p className="text-red-900">{errors.Transmission?.message}</p>
             )}
           </div>
 
@@ -167,7 +167,7 @@ const page = () => {
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
             {errors.imageFiles && (
-              <p className="text-blue-900">{errors.imageFiles.message}</p>
+              <p className="text-red-900">{errors.imageFiles.message}</p>
             )}
           </div>
 
@@ -179,7 +179,7 @@ const page = () => {
               className="w-full p-2 border border-blue-300 rounded focus:outline-none focus:border-blue-500"
             />
             {errors.ImagePath && (
-              <p className="text-blue-900">{errors.ImagePath?.message}</p>
+              <p className="text-red-900">{errors.ImagePath?.message}</p>
             )}
           </div>
           <button className="bg-white text-blue-400 p-2 rounded">Submit</button>

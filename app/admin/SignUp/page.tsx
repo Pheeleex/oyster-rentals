@@ -6,7 +6,9 @@ import { useForm, SubmitHandler, FieldValues, FieldError } from 'react-hook-form
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { auth, db } from '@/utils/firebase';
-import { SignUpSchema, signUpSchema } from '@/utils';
+import { signUpSchema, SignUpSchema } from '@/lib/schemas';
+import { setCookie } from 'nookies';
+
 
 interface CustomErrors extends FieldValues {
     submit?: FieldError;
@@ -33,17 +35,25 @@ const SignUp: React.FC = () => {
         const res = await createUserWithEmailAndPassword(email, password);
   
         if (res) {
-          await setDoc(doc(db, 'users', res.user.uid), {
+          const adminInfo = {
             id: res.user.uid,
             usermail: res.user.email,
             username: username,
-          });
+          }
+          await setDoc(doc(db, 'admin', res.user.uid), adminInfo);
   
-          localStorage.setItem('user', JSON.stringify({
+          localStorage.setItem('admin', JSON.stringify({
             email: res.user.email,
             uid: res.user.uid,
             username: username,
           }));
+
+          // Set the auth token in a cookie
+          setCookie(null, 'admin', JSON.stringify(adminInfo), {
+          maxAge: 30 * 24 * 60 * 60, // 30 days
+          path: '/',
+        });
+
           reset();
           router.push('./Dashboard');
         } else {

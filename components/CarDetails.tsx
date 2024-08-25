@@ -3,6 +3,7 @@ import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/re
 import Image from "next/image";
 import { Fragment } from "react";
 import CarBookingForm from "./CarBookingForm"; // Assume you have this component
+import JoinUs from "./JoinUs";
 
 interface CarDetailsProps {
     isOpen: boolean;
@@ -104,6 +105,7 @@ const CarDetails = ({
                                                     {bookingStatus}
                                                 </p>
                                             )}
+                                            <JoinUs />
                                         </div>
                                     ) : (
                                         <div className="flex-1 flex flex-col gap-2">

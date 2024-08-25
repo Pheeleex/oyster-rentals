@@ -11,6 +11,12 @@
   font-family: "Manrope", sans-serif;
 }
 
+
+/**AUTH PAGE**/
+.auth-page {
+  @apply flex h-screen w-full flex-col items-center justify-center gap-10;
+}
+
 /* START: General styles */
 .max-width {
   @apply max-w-[1440px] mx-auto;

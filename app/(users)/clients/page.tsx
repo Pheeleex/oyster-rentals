@@ -1,22 +1,47 @@
 'use client'
-import { useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ScheduleDetails from '@/components/ClientSchedule';
 import type { NextPage } from 'next';
 import CarTrade from '@/components/CarTrade';
 
 import { CarSpecProps, HomeProps } from '@/types';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { auth } from '@/utils/firebase';
 
 
 interface Props {
   userName: string;
 }
 
-const Home: NextPage<Props> = ({ userName }) => {
+const Home: NextPage<Props> = () => {
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null)
   const openSchedule = () => setIsScheduleOpen(true);
   const closeSchedule = () => setIsScheduleOpen(false);
   const carTradeRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
+
+useEffect(() => {
+  const storedAuthInfo = localStorage.getItem("auth");
+  if (storedAuthInfo) {
+    const authInfo = JSON.parse(storedAuthInfo);
+    setUserName(authInfo.name); // Set the username in state
+  }
+},[])
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        // If the user is not signed in, redirect to the sign-in page
+        router.push('/');
+      }
+    });
+
+    // Cleanup the subscription on unmount
+    return () => unsubscribe();
+  }, [router]);
 
   const scrollToCarTrade = () => {
     carTradeRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -24,7 +49,7 @@ const Home: NextPage<Props> = ({ userName }) => {
 
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col items-center justify-center">
-      <header className="w-full bg-blue-200 text-white py-6">
+      <header className="w-full bg-blue-200 text-white py-6 pt-10">
         <div className="container mx-auto text-center">
           <h1 className="text-3xl font-bold">Welcome, {userName}!</h1>
           <div className="mt-4 text-xl">

@@ -60,7 +60,9 @@ const CarTrade = ({
                 car={car} 
                 key={index}
                 buttonTitle='More Details'
-                showBookingForm ={false} />
+                showBookingForm ={false}
+                detailsOpen={true}
+                />
             ))}
           </div>
         </section>

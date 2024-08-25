@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes, } from "firebase/storage"
 import { Firestore, addDoc, collection, deleteDoc, doc, getFirestore, 
   updateDoc,query, getDocs, orderBy, where, startAfter, limit as firestoreLimit } from "firebase/firestore"
@@ -25,6 +25,7 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp()
 export const auth = getAuth()
 export const storage = getStorage(app)
 export const db = getFirestore(app)
+export const provider = new GoogleAuthProvider()
 
 
 const fetchCars = async (filters: FilterProps, lastVisible: any = null): 

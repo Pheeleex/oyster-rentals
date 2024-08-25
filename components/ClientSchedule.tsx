@@ -98,6 +98,7 @@ const ScheduleDetails = ({
                                     </div>
                                     <div>
                                         <CarBookingForm />
+                                      
                                         {bookingStatus && (
                                             <p className="mt-4 text-red-500">
                                                 {bookingStatus}

@@ -10,11 +10,8 @@ import { useRouter } from 'next/navigation';
 import { auth } from '@/utils/firebase';
 
 
-interface Props {
-  userName: string;
-}
 
-const Home: NextPage<Props> = () => {
+const Home: NextPage = () => {
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null)
   const openSchedule = () => setIsScheduleOpen(true);

@@ -16,7 +16,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.next(); // Allow access to SignIn and SignUp pages
   }
 
-  if(pathname.startsWith('/clients/SignIn') || pathname.startsWith('/clients/SignUp')) {
+  if(pathname.startsWith('/clients/sign-in') || pathname.startsWith('/clients/sign-up')) {
     return NextResponse.next(); // Allow access to SignIn and SignUp pages
   }
 

@@ -3,9 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import CarIcon from "@/public/CarIcon";
 import { signInWithGoogle, signOut } from "@/utils/Authentication";
-import { useRouter, usePathname } from "next/navigation"; // Import usePathname
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { auth } from "@/utils/firebase";
 import { parseCookies } from "nookies";
 
 const NavBar = () => {
@@ -13,7 +12,6 @@ const NavBar = () => {
   const pathname = usePathname(); // Get the current pathname
   const [user, setUser] = useState<any>(null);
   const cookies = parseCookies();
-
 
   useEffect(() => {
     // Check cookies for client authentication status
@@ -46,16 +44,10 @@ const NavBar = () => {
           <CarIcon />
         </Link>
 
-          {/* Conditionally render the sign-in/sign-out button */}
-          {!pathname.startsWith('/Admin') && ( // Check if pathname starts with /Admin
-          user && ( 
-            <Link href='/clients' className="text-grey bg-blue  p-2">Client Dashboard</Link>
-          )
-        ) }
-        
-        {/* Conditionally render the sign-in/sign-out button */}
         {!pathname.startsWith('/Admin') && ( // Check if pathname starts with /Admin
-          user ? (
+          pathname === '/' && user ? ( // If on homepage and user is signed in, show Dashboard
+            <Link href='/clients' className="text-blue-800 bg-blue p-2 bg-white rounded">Dashboard</Link>
+          ) : pathname.startsWith('/clients') && user ? ( // If inside /clients directory, show Sign out
             <button 
               onClick={handleSignOut}
               className="bg-red-600 text-white p-2 rounded cursor-pointer"
@@ -63,12 +55,14 @@ const NavBar = () => {
               Sign out
             </button>
           ) : (
-            <button 
-              onClick={handleSignIn}
-              className="bg-blue-950 text-white p-2 rounded cursor-pointer"
-            >
-              Sign in
-            </button>
+            !user && ( // Show Sign in button if user is not signed in
+              <button 
+                onClick={handleSignIn}
+                className="bg-blue-950 text-white p-2 rounded cursor-pointer"
+              >
+                Sign in
+              </button>
+            )
           )
         )}
       </nav>
@@ -77,3 +71,4 @@ const NavBar = () => {
 };
 
 export default NavBar;
+

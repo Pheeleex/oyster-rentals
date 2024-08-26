@@ -3,27 +3,35 @@ import Link from "next/link";
 import Image from "next/image";
 import CarIcon from "@/public/CarIcon";
 import { signInWithGoogle, signOut } from "@/utils/Authentication";
-import { useRouter, usePathname } from "next/navigation"; // Import usePathname
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { auth } from "@/utils/firebase";
-import { parseCookies } from "nookies";
+import { onAuthStateChanged } from "firebase/auth";
 
 const NavBar = () => {
   const router = useRouter();
-  const pathname = usePathname(); // Get the current pathname
+  const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
-  const cookies = parseCookies();
-
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Check cookies for client authentication status
-    const authCookie = cookies.auth ? JSON.parse(cookies.auth) : null;
+    // Listen for auth state changes
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        const authInfo = {
+          userId: currentUser.uid,
+          name: currentUser.displayName,
+          photoURL: currentUser.photoURL,
+          isAuth: true,
+        };
 
-    if (authCookie && authCookie.isAuth) {
-      setUser(authCookie); // Set the user if authenticated
-    } else {
-      setUser(null); // Clear the user if not authenticated
-    }
+        setUser(authInfo);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup subscription on unmount
   }, []);
 
   const handleSignIn = async () => {
@@ -35,7 +43,13 @@ const NavBar = () => {
 
   const handleSignOut = async () => {
     await signOut();
+    setDropdownOpen(false);
+    setUser(null);
     router.push('/');
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   return (
@@ -46,31 +60,45 @@ const NavBar = () => {
           <CarIcon />
         </Link>
 
-          
-       {/* Conditionally render based on the pathname and user status */}
-       {!pathname.startsWith('/Admin') && (
-          <>
-            {pathname === '/' && user ? (
-              // On homepage and user is signed in, show Dashboard
-              <Link href='/clients' className="text-blue-800 bg-white p-2 rounded">Dashboard</Link>
-            ) : pathname === '/' && !user ? (
-              // On homepage and user is not signed in, show Sign In
-              <button 
-                onClick={handleSignIn}
-                className="bg-blue-950 text-white p-2 rounded cursor-pointer"
+        {!pathname.startsWith('/Admin') && (
+          user ? (
+            <div className="relative">
+              <div 
+                className="cursor-pointer flex items-center space-x-2"
+                onClick={toggleDropdown}
               >
-                Sign in
-              </button>
-            ) : pathname.startsWith('/clients') && user && (
-              // In /clients directory, show Sign Out
-              <button 
-                onClick={handleSignOut}
-                className="bg-red-600 text-white p-2 rounded cursor-pointer"
-              >
-                Sign out
-              </button>
-            )}
-          </>
+                <Image
+                  src={user.photoURL || "/default-avatar.png"} 
+                  alt="User Avatar"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+                <span className="text-gray-800 font-medium">{user.name}</span>
+              </div>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
+                  <Link href="/clients" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                    Dashboard
+                  </Link>
+                  <button 
+                    onClick={handleSignOut}
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button 
+              onClick={handleSignIn}
+              className="bg-blue-950 text-white p-2 rounded cursor-pointer"
+            >
+              Sign in
+            </button>
+          )
         )}
       </nav>
     </header>

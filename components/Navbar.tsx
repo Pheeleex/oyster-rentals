@@ -6,16 +6,25 @@ import { signInWithGoogle, signOut } from "@/utils/Authentication";
 import { useRouter, usePathname } from "next/navigation"; // Import usePathname
 import { useEffect, useState } from "react";
 import { auth } from "@/utils/firebase";
+import { parseCookies } from "nookies";
 
 const NavBar = () => {
   const router = useRouter();
   const pathname = usePathname(); // Get the current pathname
   const [user, setUser] = useState<any>(null);
+  const cookies = parseCookies();
+
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(setUser);
-    return () => unsubscribe();
-  }, []);
+    // Check cookies for client authentication status
+    const authCookie = cookies.auth ? JSON.parse(cookies.auth) : null;
+
+    if (authCookie && authCookie.isAuth) {
+      setUser(authCookie); // Set the user if authenticated
+    } else {
+      setUser(null); // Clear the user if not authenticated
+    }
+  }, [cookies]);
 
   const handleSignIn = async () => {
     const isSignedIn = await signInWithGoogle();
@@ -36,6 +45,13 @@ const NavBar = () => {
           <h1 className="font-extrabold text-blue-800">CallisDreamMotors</h1>
           <CarIcon />
         </Link>
+
+          {/* Conditionally render the sign-in/sign-out button */}
+          {!pathname.startsWith('/Admin') && ( // Check if pathname starts with /Admin
+          user && ( 
+            <Link href='/clients' className="text-grey bg-blue  p-2">Client Dashboard</Link>
+          )
+        ) }
         
         {/* Conditionally render the sign-in/sign-out button */}
         {!pathname.startsWith('/Admin') && ( // Check if pathname starts with /Admin

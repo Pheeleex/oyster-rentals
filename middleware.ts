@@ -16,6 +16,11 @@ export function middleware(req: NextRequest) {
     return NextResponse.next(); // Allow access to SignIn and SignUp pages
   }
 
+  if(pathname.startsWith('/clients/SignIn') || pathname.startsWith('/clients/SignUp')) {
+    return NextResponse.next(); // Allow access to SignIn and SignUp pages
+  }
+
+
   // Logic for client paths: Ensure only users with 'auth' cookie can access
   if (isClientPath && authCookie) {
     return NextResponse.next(); // Allow clients with auth cookie to proceed

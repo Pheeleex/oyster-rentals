@@ -62,7 +62,7 @@ useEffect(() => {
             className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
             onClick={openSchedule}
           >
-            Go
+            Schedule
           </button>
         </div>
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-[20rem] min-h-[15rem] text-center flex flex-col justify-between">
@@ -74,8 +74,12 @@ useEffect(() => {
         </div>
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-[20rem] min-h-[15rem] text-center flex flex-col justify-between">
           <h3 className="text-xl font-semibold mb-2">New Car Requests</h3>
-          <p className="mb-4">Request information or schedule a test drive for new car models.</p>
-          <Link href='clients/review' className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Request Info</Link>
+          <p className="mb-4">Can't find a car you want in our inventory?
+            Click here to see a more diverse inventory of cars, place a request and we will get back to you
+          </p>
+          <Link href='clients/review' className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+          Visit Directory
+          </Link>
         </div>
       </main>
       <div className='mt-20 w-[85%]' ref={carTradeRef}>

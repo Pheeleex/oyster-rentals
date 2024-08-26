@@ -11,7 +11,7 @@ const JoinUs = () => {
                 <li>Custom requests for cars and car part</li>
                 <li>Exciting community of avid car lovers</li>
             </ul>
-            <Link href='' className='bg-blue-800 text-white rounded p-2 mt-8'>Sign up Now</Link>
+            <Link href='/clients/sign-in' className='bg-blue-800 text-white rounded p-2 mt-8'>Sign up Now</Link>
         </div>
     )
 }

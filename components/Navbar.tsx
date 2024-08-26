@@ -3,8 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import CarIcon from "@/public/CarIcon";
 import { signInWithGoogle, signOut } from "@/utils/Authentication";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // Import usePathname
 import { useEffect, useState } from "react";
+import { auth } from "@/utils/firebase";
 import { parseCookies } from "nookies";
 
 const NavBar = () => {
@@ -12,6 +13,7 @@ const NavBar = () => {
   const pathname = usePathname(); // Get the current pathname
   const [user, setUser] = useState<any>(null);
   const cookies = parseCookies();
+
 
   useEffect(() => {
     // Check cookies for client authentication status
@@ -22,7 +24,7 @@ const NavBar = () => {
     } else {
       setUser(null); // Clear the user if not authenticated
     }
-  }, [cookies]);
+  }, []);
 
   const handleSignIn = async () => {
     const isSignedIn = await signInWithGoogle();
@@ -44,26 +46,31 @@ const NavBar = () => {
           <CarIcon />
         </Link>
 
-        {!pathname.startsWith('/Admin') && ( // Check if pathname starts with /Admin
-          pathname === '/' && user ? ( // If on homepage and user is signed in, show Dashboard
-            <Link href='/clients' className="text-blue-800 bg-blue p-2 bg-white rounded">Dashboard</Link>
-          ) : pathname.startsWith('/clients') && user ? ( // If inside /clients directory, show Sign out
-            <button 
-              onClick={handleSignOut}
-              className="bg-red-600 text-white p-2 rounded cursor-pointer"
-            >
-              Sign out
-            </button>
-          ) : (
-            !user && ( // Show Sign in button if user is not signed in
+          
+       {/* Conditionally render based on the pathname and user status */}
+       {!pathname.startsWith('/Admin') && (
+          <>
+            {pathname === '/' && user ? (
+              // On homepage and user is signed in, show Dashboard
+              <Link href='/clients' className="text-blue-800 bg-white p-2 rounded">Dashboard</Link>
+            ) : pathname === '/' && !user ? (
+              // On homepage and user is not signed in, show Sign In
               <button 
                 onClick={handleSignIn}
                 className="bg-blue-950 text-white p-2 rounded cursor-pointer"
               >
                 Sign in
               </button>
-            )
-          )
+            ) : pathname.startsWith('/clients') && user && (
+              // In /clients directory, show Sign Out
+              <button 
+                onClick={handleSignOut}
+                className="bg-red-600 text-white p-2 rounded cursor-pointer"
+              >
+                Sign out
+              </button>
+            )}
+          </>
         )}
       </nav>
     </header>
@@ -71,4 +78,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-

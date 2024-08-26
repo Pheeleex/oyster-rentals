@@ -22,12 +22,15 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col m-16 p-16 justify-center items-center'>
-      <h1>Sign In</h1>
+    <div className='flex justify-center items-center my-[10rem]'>
+      <div className="flex flex-col items-center justify-center border-gray-800 rounded-md border-2 p-16">
+      <h1 className="text-blue text-2xl mb-5">Sign In</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button onClick={handleSignIn} disabled={loading}>
-        {loading ? "Signing in..." : "Sign in with Google"}
+      <button onClick={handleSignIn} disabled={loading} 
+      className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500">
+        {loading ? "Signing Up..." : "Sign Up with Google"}
       </button>
+    </div>
     </div>
   );
 };

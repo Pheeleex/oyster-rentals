@@ -74,7 +74,7 @@ const NavBar = () => {
                   height={40}
                   className="rounded-full"
                 />
-                <span className="text-gray-800 font-medium">{user.name}</span>
+               
               </div>
 
               {dropdownOpen && (

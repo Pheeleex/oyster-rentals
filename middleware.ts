@@ -12,7 +12,7 @@ export function middleware(req: NextRequest) {
   const isClientPath = pathname.startsWith('/clients');
   const isAdminPath = pathname.startsWith('/Admin');
 
-  if(pathname.startsWith('/Admin/SignIn') || pathname.startsWith('/Admin/SignUp')) {
+  if(pathname.startsWith('/Admin/signIn') || pathname.startsWith('/Admin/signUp')) {
     return NextResponse.next(); // Allow access to SignIn and SignUp pages
   }
 

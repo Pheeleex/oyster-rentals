@@ -24,7 +24,7 @@ const CarRequests = async({searchParams}: HomeProps) => {
             <p>Make your custom orders here</p>
         </div>
       </div>
-      <div className='home__filters'>
+      <div className='home__filters p-24'>
           <SearchBar />
           <div className='home__filter-container'>
             <CustomFilter title='fuel' options={fuels}/>

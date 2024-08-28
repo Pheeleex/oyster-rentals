@@ -15,7 +15,7 @@ const SignIn: React.FC = () => {
     setLoading(false);
     
     if (success) {
-      router.push('/'); // Redirect to the homepage or any other page
+      router.push('/clients'); // Redirect to the homepage or any other page
     } else {
       setError("Failed to sign in. Please try again.");
     }

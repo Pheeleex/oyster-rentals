@@ -65,7 +65,7 @@ const NavBar = () => {
           className='object-contain'
         />
       </Link>
-        {!pathname.startsWith('/Admin') && (
+        {!pathname.startsWith('/admin') && (
           user ? (
             <div className="relative">
               <div 

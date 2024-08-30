@@ -10,9 +10,9 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const isClientPath = pathname.startsWith('/clients');
-  const isAdminPath = pathname.startsWith('/Admin');
+  const isAdminPath = pathname.startsWith('/admin');
 
-  if (pathname.startsWith('/Admin/signIn') || pathname.startsWith('/Admin/signUp')) {
+  if (pathname.startsWith('/admin/signIn') || pathname.startsWith('/admin/signUp')) {
     return NextResponse.next(); // Allow access to SignIn and SignUp pages
   }
 
@@ -32,7 +32,7 @@ export function middleware(req: NextRequest) {
 
   // If the user is trying to access an Admin path without the 'admin' cookie, redirect to /Admin/signIn
   if (isAdminPath && !adminCookie) {
-    return NextResponse.redirect(new URL('/Admin/signIn', req.url));
+    return NextResponse.redirect(new URL('/admin/signIn', req.url));
   }
 
   // If the user is trying to access a Client path without the 'auth' cookie, redirect to the homepage
@@ -46,5 +46,5 @@ export function middleware(req: NextRequest) {
 
 // Config to specify which paths the middleware should run on
 export const config = {
-  matcher: ['/clients/:path*', '/Admin/:path*'],
+  matcher: ['/clients/:path*', '/admin/:path*'],
 };

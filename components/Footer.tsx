@@ -50,7 +50,7 @@ const Footer = () => (
         <Link href="/" className="text-gray-500">
           Terms & Condition
         </Link>
-        <Link href="/Admin/Dashboard" className="text-gray-500">
+        <Link href="/admin/Dashboard" className="text-gray-500">
           Admin Dashboard
         </Link>
       </div>

@@ -99,7 +99,6 @@ const ScheduleDetails = ({
                                     </div>
                                     <div>
                                        <SchedulePicker />
-                                      
                                         {bookingStatus && (
                                             <p className="mt-4 text-red-500">
                                                 {bookingStatus}

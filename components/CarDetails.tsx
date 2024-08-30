@@ -1,9 +1,10 @@
 import { CarProps, CarSpecProps } from "@/types";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import CarBookingForm from "./CarBookingForm"; // Assume you have this component
 import JoinUs from "./JoinUs";
+import { set } from "react-hook-form";
 
 interface CarDetailsProps {
     isOpen: boolean;
@@ -18,13 +19,35 @@ const CarDetails = ({
     closeModal,
     car,
     showBookingForm = false,
-    bookingStatus = '',
 }: CarDetailsProps) => {
+    const [bookingStatus, setBookingStatus] = useState<string | null>(null);
     // Type guard to determine if `car` is `CarSpecProps`
     const isCarSpecProps = (car: CarSpecProps | CarProps): car is CarSpecProps => {
         return (car as CarSpecProps).Make !== undefined;
     };
+// Assuming the car has an `id` field that serves as the `carId`
+const carId = isCarSpecProps(car) ? car.id : '';
 
+useEffect(() => {
+    if (isOpen) {
+        // Retrieve booking details from local storage
+        const savedBookingDetails = localStorage.getItem('carBookingDetails');
+        if (savedBookingDetails) {
+            const bookingDetails = JSON.parse(savedBookingDetails);
+            if (bookingDetails.carId === carId) {
+                // Booking details match the current car
+                const status = `You booked this car
+                for a test drive on,  ${new Date(bookingDetails.pickupDate).toLocaleDateString()} 
+                do you want to reschedule?`;
+                setBookingStatus(status);
+            } else {
+                setBookingStatus(null);
+            }
+        } else {
+            setBookingStatus(null);
+        }
+    }
+}, [isOpen, carId]);
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
@@ -89,10 +112,13 @@ const CarDetails = ({
                                             ))}
                                         </div>
                                     </div>
-
+                                   
+                                            
                                     {showBookingForm ? (
                                         <div>
-                                            <CarBookingForm />
+                                            <CarBookingForm
+                                                carId={carId}
+                                                />
                                             {bookingStatus && (
                                                 <p className="mt-4 text-red-500">
                                                     {bookingStatus}

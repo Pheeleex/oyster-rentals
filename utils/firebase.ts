@@ -3,7 +3,9 @@ import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes, } from "firebase/storage"
 import { Firestore, addDoc, collection, deleteDoc, doc, getFirestore, 
-  updateDoc,query, getDocs, orderBy, where, startAfter, limit as firestoreLimit } from "firebase/firestore"
+  updateDoc,query, getDocs, orderBy, where, startAfter, limit as firestoreLimit, 
+  setDoc,
+  getDoc} from "firebase/firestore"
 import { CarSpecProps, FilterProps, SetCars } from "@/types";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -135,26 +137,6 @@ try {
 }
 }
 
-
-// Delete property function
-/*export const deleteProperty = async (id: string, ImagePath: string, setProperties: SetProperties): Promise<void> => {
-  try {
-    await deleteDoc(doc(db, '2309', id));
-
-    // Delete associated property image from Firebase storage
-    const imageListRef = ref(storage, `${ImagePath}/`);
-    const imageList = await listAll(imageListRef);
-    const deletePromises = imageList.items.map((item) => deleteObject(ref(storage, item.fullPath)));
-
-    await Promise.all(deletePromises);
-
-    setProperties((prevProperties) => prevProperties.filter((prop) => prop.id !== id));
-    console.log(`Property with id ${id} deleted successfully`);
-  } catch (error) {
-    console.error(`Error deleting property with id ${id}:`, error);
-  }
-}; */
-
 export const deleteCars = async(id: string, ImagePath:string, setCars:SetCars): Promise<void> => {
   try {
     await deleteDoc(doc(db, 'Cars', id))
@@ -170,5 +152,33 @@ export const deleteCars = async(id: string, ImagePath:string, setCars:SetCars): 
     console.log(`Car with id ${id} deleted successfully`)
   } catch (error) {
     console.error(`Error deleting car with id ${id}:`, error)
+  }
+}
+
+
+export const SaveBooking = async(carId: string, confirmDates: object) => {
+  try {
+    await setDoc(doc(db, 'bookings', carId), confirmDates)
+  } catch (error) {
+    console.error('Error saving booking details:', error);
+      alert('Failed to save booking details. Please try again.');
+  }
+}
+
+export const getBookings = async(carId: string) => {
+  try {
+    const docRef = doc(db, 'bookings', carId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const bookingDetails = docSnap.data();
+      return bookingDetails.pickupDate;
+    } else {
+      console.log('No such document!');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching booking details:', error);
+    return null;
   }
 }

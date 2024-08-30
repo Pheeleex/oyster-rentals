@@ -26,6 +26,8 @@ const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen }: CarCardProps
         setIsOpen(true)
     }
 
+    
+
     const carImage = images && images.length > 0 ? images[0] : '/hero.png';
     
   return (

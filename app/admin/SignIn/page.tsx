@@ -5,6 +5,7 @@ import { auth } from '@/utils/firebase';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { destroyCookie, setCookie } from 'nookies';
+import { setAdminCookie } from '@/utils';
 
 type Inputs = {
   error: string,
@@ -36,10 +37,7 @@ const SignIn = () => {
       if (user) {
         sessionStorage.setItem('admin', JSON.stringify(user));
         // Set the auth token in a cookie
-        setCookie(null, 'admin', JSON.stringify(user), {
-          maxAge: 30 * 24 * 60 * 60, // 30 days
-          path: '/',
-        });
+       setAdminCookie(user)
         router.push('./Dashboard');
       }else{
         if (error) {

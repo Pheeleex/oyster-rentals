@@ -133,7 +133,19 @@ export const generateCarImageUrl = (car: CarProps, angle?: string) => {
   url.searchParams.append('angle', `${angle}`);
 
   return `${url}`;
-} 
+}
+
+// utils/serverActions.ts
+
+import { setCookie } from 'nookies';
+
+export const setAdminCookie = (user: any) => {
+  setCookie(null, 'admin', JSON.stringify(user), {
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    path: '/',
+  });
+};
+
 
 
 

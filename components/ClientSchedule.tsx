@@ -7,6 +7,7 @@ import 'react-calendar/dist/Calendar.css';
 import CustomButton from "./CustomButton";
 import CarBookingForm from "./CarBookingForm";
 import { getCarBookingDetails } from "@/utils";
+import SchedulePicker from "./SchedulePicker";
 
 interface CarDetailsProps {
     isOpen: boolean;
@@ -97,7 +98,7 @@ const ScheduleDetails = ({
                                         </div>
                                     </div>
                                     <div>
-                                        <CarBookingForm />
+                                       <SchedulePicker />
                                       
                                         {bookingStatus && (
                                             <p className="mt-4 text-red-500">

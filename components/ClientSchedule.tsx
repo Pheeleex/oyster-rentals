@@ -5,18 +5,19 @@ import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import 'react-calendar/dist/Calendar.css'; 
 import CustomButton from "./CustomButton";
-import CarBookingForm from "./CarBookingForm";
 import { getCarBookingDetails } from "@/utils";
-import SchedulePicker from "./SchedulePicker";
+import ScheduleForm from "./Forms/ScheduleForm";
 
 interface CarDetailsProps {
     isOpen: boolean;
     closeModal: () => void;
+    userName: string
 }
 
 const ScheduleDetails = ({
     isOpen, 
     closeModal, 
+    userName
 }: CarDetailsProps) => {
     const [bookingStatus, setBookingStatus] = useState<string | null>(null);
 
@@ -98,12 +99,10 @@ const ScheduleDetails = ({
                                         </div>
                                     </div>
                                     <div>
-                                       <SchedulePicker />
-                                        {bookingStatus && (
-                                            <p className="mt-4 text-red-500">
-                                                {bookingStatus}
-                                            </p>
-                                        )}
+                                       <ScheduleForm
+                                            type='create'
+                                            userName={userName}
+                                       />
                                     </div>
                                 </DialogPanel>
                             </TransitionChild>

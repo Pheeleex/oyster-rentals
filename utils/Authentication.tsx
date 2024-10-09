@@ -44,3 +44,6 @@ export const signOut = async (): Promise<void> => {
       console.error("Sign-out error:", error.message);
     }
   };
+
+
+  

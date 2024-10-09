@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { decryptKey } from './lib/utils';
 
 export function middleware(req: NextRequest) {
   // Retrieve the 'auth' and 'admin' cookies
   const authCookie = req.cookies.get('auth');
-  const adminCookie = req.cookies.get('admin');
+  const adminAccess = req.cookies.get('accessKey')?.value;
 
   // Determine the current path
   const { pathname } = req.nextUrl;
@@ -12,31 +13,32 @@ export function middleware(req: NextRequest) {
   const isClientPath = pathname.startsWith('/clients');
   const isAdminPath = pathname.startsWith('/admin');
 
-  if (pathname.startsWith('/admin/signIn') || pathname.startsWith('/admin/signUp')) {
-    return NextResponse.next(); // Allow access to SignIn and SignUp pages
-  }
-
+  // Handle public client routes for sign-in and sign-up
   if (pathname.startsWith('/clients/sign-in') || pathname.startsWith('/clients/sign-up')) {
     return NextResponse.next(); // Allow access to SignIn and SignUp pages
   }
 
   // Logic for client paths: Ensure only users with 'auth' cookie can access
-  if (isClientPath && authCookie) {
-    return NextResponse.next(); // Allow clients with auth cookie to proceed
+  if (isClientPath) {
+    if (authCookie) {
+      return NextResponse.next(); // Allow clients with auth cookie to proceed
+    } else {
+      return NextResponse.redirect(new URL('/', req.url)); // Redirect unauthorized clients to home
+    }
   }
 
-  // Logic for admin paths: Ensure only users with 'admin' cookie can access
-  if (isAdminPath && adminCookie) {
-    return NextResponse.next(); // Allow admins with admin cookie to proceed
-  }
+  // Handle admin access: decrypt and validate the accessKey cookie
+  if (isAdminPath) {
+    if (adminAccess) {
+      const decryptedKey = decryptKey(adminAccess);
+      
+      // Check if accessKey is valid
+      if (decryptedKey && decryptedKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+        return NextResponse.next(); // Allow admin access
+      }
+    }
 
-  // If the user is trying to access an Admin path without the 'admin' cookie, redirect to /Admin/signIn
-  if (isAdminPath && !adminCookie) {
-    return NextResponse.redirect(new URL('/admin/signIn', req.url));
-  }
-
-  // If the user is trying to access a Client path without the 'auth' cookie, redirect to the homepage
-  if (isClientPath && !authCookie) {
+    // Redirect to homepage if admin access is not authorized
     return NextResponse.redirect(new URL('/', req.url));
   }
 
@@ -46,5 +48,5 @@ export function middleware(req: NextRequest) {
 
 // Config to specify which paths the middleware should run on
 export const config = {
-  matcher: ['/clients/:path*', '/admin/:path*'],
+  matcher: ['/clients/:path*', '/admin/:path*'], // Protect both client and admin paths
 };

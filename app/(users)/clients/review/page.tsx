@@ -4,7 +4,7 @@ import { fuels, yearsOfProduction } from '@/constants'
 import { HomeProps } from '@/types'
 import { fetchCarsRA } from '@/utils'
 import React from 'react'
-import Card from './CarCardReview'
+import Card from '../../../../components/CarCardReview'
 
 const CarRequests = async({searchParams}: HomeProps) => {
   const Cars = await fetchCarsRA({

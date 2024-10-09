@@ -1,17 +1,18 @@
-import { CarProps, CarSpecProps } from "@/types";
+import { CarProps, CarSpecProps, TestDriveProps } from "@/types";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
-import { Fragment, useEffect, useState } from "react";
-import CarBookingForm from "./CarBookingForm"; // Assume you have this component
+import { Fragment, useState } from "react";
 import JoinUs from "./JoinUs";
-import { set } from "react-hook-form";
+import CarBookingForm from "./Forms/CarBookingForm";
+import CustomButton from "./CustomButton";
+import PreOrderForm from "./Forms/PreOrderForm";
 
 interface CarDetailsProps {
     isOpen: boolean;
     closeModal: () => void;
-    car: CarSpecProps | CarProps;
+    car?: CarSpecProps | CarProps | null;
     showBookingForm?: boolean; // New prop to conditionally render the booking form
-    bookingStatus?: string; // New prop for booking status
+    bookingSchedule?: Date | null;
 }
 
 const CarDetails = ({
@@ -19,35 +20,31 @@ const CarDetails = ({
     closeModal,
     car,
     showBookingForm = false,
+    bookingSchedule,
 }: CarDetailsProps) => {
     const [bookingStatus, setBookingStatus] = useState<string | null>(null);
-    // Type guard to determine if `car` is `CarSpecProps`
-    const isCarSpecProps = (car: CarSpecProps | CarProps): car is CarSpecProps => {
-        return (car as CarSpecProps).Make !== undefined;
-    };
-// Assuming the car has an `id` field that serves as the `carId`
-const carId = isCarSpecProps(car) ? car.id : '';
+    const [showForm, setShowForm] = useState(false);
 
-useEffect(() => {
-    if (isOpen) {
-        // Retrieve booking details from local storage
-        const savedBookingDetails = localStorage.getItem('carBookingDetails');
-        if (savedBookingDetails) {
-            const bookingDetails = JSON.parse(savedBookingDetails);
-            if (bookingDetails.carId === carId) {
-                // Booking details match the current car
-                const status = `You booked this car
-                for a test drive on,  ${new Date(bookingDetails.pickupDate).toLocaleDateString()} 
-                do you want to reschedule?`;
-                setBookingStatus(status);
-            } else {
-                setBookingStatus(null);
-            }
-        } else {
-            setBookingStatus(null);
-        }
-    }
-}, [isOpen, carId]);
+    // Type guard to determine if `car` is `CarSpecProps`
+    const isCarSpecProps = (car?: CarSpecProps | CarProps): car is CarSpecProps => {
+        return !!car && (car as CarSpecProps).Make !== undefined;
+    };
+
+    // Type guard to determine if `car` is `CarProps`
+    const isCarProps = (car?: CarSpecProps | CarProps): car is CarProps => {
+        return !!car && (car as CarProps).make !== undefined;
+    };
+
+    // Check if car exists before accessing properties
+    const carId = car && (isCarSpecProps(car) ? car.id : isCarProps(car) ? car.id : '');
+    const carManufacturer = car && (isCarSpecProps(car) ? car.Make : isCarProps(car) ? car.make : '');
+    const carModel = car && (isCarSpecProps(car) ? car.Model : isCarProps(car) ? car.model : '');
+
+    const showPreOrderForm = () => {
+        setShowForm(true);
+        console.log(showForm);
+    };
+
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
@@ -90,7 +87,7 @@ useEffect(() => {
                                     <div className='flex-1 flex flex-col gap-3'>
                                         <div className='relative w-full h-40 bg-pattern bg-cover bg-center rounded-lg'>
                                             <Image 
-                                                src={isCarSpecProps(car) && car.images ? car.images[0] : '/hero.png'}
+                                                src={car && isCarSpecProps(car) && car.images ? car.images[0] : '/hero.png'}
                                                 alt="car"
                                                 fill 
                                                 priority 
@@ -102,7 +99,7 @@ useEffect(() => {
                                             {Array.from({ length: 3 }, (_, index) => (
                                                 <div key={index} className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
                                                     <Image 
-                                                        src={isCarSpecProps(car) && car.images ? car.images[index + 1] : '/hero.png'}
+                                                        src={car && isCarSpecProps(car) && car.images ? car.images[index + 1] : '/hero.png'}
                                                         alt="car"
                                                         fill 
                                                         priority 
@@ -112,13 +109,15 @@ useEffect(() => {
                                             ))}
                                         </div>
                                     </div>
-                                   
-                                            
+
                                     {showBookingForm ? (
                                         <div>
                                             <CarBookingForm
-                                                carId={carId}
-                                                />
+                                                type='create'
+                                                carModel={carModel || ''}
+                                                carManufacturer={carManufacturer || ''}
+                                                carId={carId || ''}
+                                            />
                                             {bookingStatus && (
                                                 <p className="mt-4 text-red-500">
                                                     {bookingStatus}
@@ -129,12 +128,12 @@ useEffect(() => {
                                     ) : (
                                         <div className="flex-1 flex flex-col gap-2">
                                             <h2 className='font-semibold text-xl capitalize'>
-                                                {isCarSpecProps(car) ? `${car.Make} ${car.Model}` : 'Unknown Car'}
+                                                {car && isCarProps(car) ? `${car.make} ${car.model}` : 'Unknown Car'}
                                             </h2>
 
-                                            <div className="mt-3 flex flex-wrap gap-4">
-                                                {Object.entries(car).map(
-                                                    ([key, value]) => (
+                                            {car ? (
+                                                <div className="mt-3 flex flex-wrap gap-4">
+                                                    {Object.entries(car).map(([key, value]) => (
                                                         <div className='flex justify-between gap-5 w-full text-right' key={key}>
                                                             <h4 className='text-grey capitalize'>
                                                                 {key.split("_").join(" ")}
@@ -143,9 +142,30 @@ useEffect(() => {
                                                                 {value}
                                                             </p>
                                                         </div>
-                                                    )
-                                                )}
-                                            </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <p>No car available. Please pre-order.</p>
+                                            )}
+                                            
+                                            <CustomButton
+                                                title="Pre-order now"
+                                                btnType="button"
+                                                containerStyles="bg-blue-500 p-2 text-blue-950 w-[200px] rounded lg:ml-[30%]"
+                                                handleClick={showPreOrderForm}
+                                            />
+
+                                            {!car ? (
+                                                <PreOrderForm type='create' />
+                                            ) : isCarProps(car) && (
+                                                <PreOrderForm
+                                                    carManufacturer={car.make}
+                                                    carModel={car.model}
+                                                    year={car.year}
+                                                    carId={car.id}
+                                                    type='create'
+                                                />
+                                            )}
                                         </div>
                                     )}
                                 </DialogPanel>
@@ -159,3 +179,4 @@ useEffect(() => {
 };
 
 export default CarDetails;
+

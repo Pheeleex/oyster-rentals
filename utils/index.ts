@@ -1,4 +1,5 @@
 import { CarProps, FilterProps } from "@/types";
+import { v4 as uuidv4, v4 } from 'uuid';
 
 
 export async function fetchCarsRA(filters: FilterProps) {
@@ -35,10 +36,14 @@ export async function fetchCarsRA(filters: FilterProps) {
 
     const result = await response.json();
 
-    // Log the result to see what is being returned
-    console.log(result, 'result');
+    const carsWithId = result.map((car: CarProps) => ({
+      ...car,
+      id: v4(),  // Generate unique ID for each car
+    }));
 
-    return result;
+    console.log(carsWithId, 'result with ids');
+
+    return carsWithId;
   } catch (error) {
     console.error('Error fetching cars:', error);
     return [];

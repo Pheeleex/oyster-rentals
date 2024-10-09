@@ -93,6 +93,7 @@ useEffect(() => {
       <ScheduleDetails 
         isOpen={isScheduleOpen} 
         closeModal={closeSchedule} 
+        userName= {userName || 'Guest'}
       />
     </div>
   );

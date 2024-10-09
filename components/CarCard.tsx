@@ -11,11 +11,12 @@ interface CarCardProps {
     buttonTitle: string,
     showBookingForm: boolean
     detailsOpen: boolean
+    bookingSchedule?: Date | null
 }
 
 
 
-const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen }: CarCardProps) => {
+const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen, bookingSchedule }: CarCardProps) => {
     const [isOpen, setIsOpen] = useState(false) 
 
 
@@ -102,8 +103,8 @@ const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen }: CarCardProps
                 <CarDetails isOpen={isOpen}
                 closeModal={() => setIsOpen(false)}
                 showBookingForm={showBookingForm}
-                bookingStatus=''
                 car={car}
+                bookingSchedule={bookingSchedule}
                 /> 
             )
            }

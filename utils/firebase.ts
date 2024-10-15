@@ -13,13 +13,13 @@ import { CarSpecProps, FilterProps, SetCars } from "@/types";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBB7FmmCP8K1d-q6ENm6jrRginM8OOYqjI",
-  authDomain: "wallet-app-6c807.firebaseapp.com",
-  projectId: "wallet-app-6c807",
-  storageBucket: "wallet-app-6c807.appspot.com",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
   messagingSenderId: "829543640892",
-  appId: "1:829543640892:web:6f23e8db6393f313ec3839",
-  measurementId: "G-4CCHTYMKFX"
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MESSENGER_ID
 };
 
 // Initialize Firebase

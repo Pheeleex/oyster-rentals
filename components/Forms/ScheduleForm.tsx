@@ -20,7 +20,7 @@ const ScheduleForm = ({
   setOpen?: (open: boolean) => void,
   type: "create" | "cancel" | "confirm",
   appointment?: AppointmentProps
-  userName: string
+  userName?: string
 }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string>('')

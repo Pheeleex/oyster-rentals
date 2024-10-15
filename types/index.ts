@@ -70,12 +70,12 @@ documents: PreOrderProps
 
 export interface AppointmentProps{
   id: string;
-  appointmentId: string;
+  appointmentId?: string;
   schedule: Date;
   reason: string;
   createdAt?: Date
   status?: Status
-  userName: string
+  userName?: string
 }
 
 export interface CustomFilterProps{

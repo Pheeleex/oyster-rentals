@@ -43,7 +43,7 @@ export const pocolumns: ColumnDef<PreOrderProps >[] = [
     header: "Status",
     cell: ({row}) => (
         <div className="min-w-[115px] text-white">
-            <StatusBadge status={row.original.status} />
+            <StatusBadge status={row.original.status!} />
         </div>
     )
   },

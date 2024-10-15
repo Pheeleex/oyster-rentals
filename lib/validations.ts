@@ -10,6 +10,10 @@ export const CreateAppointmentSchema = z.object({
       .string()
       .refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number"),
       schedule: z.coerce.date(),
+      notes: z
+    .string()
+    .min(2, "Reason must be at least 2 characters")
+    .max(500, "Reason must be at most 500 characters"),
   });
 
   export const ConfirmAppointmentSchema = z.object({
@@ -21,6 +25,7 @@ export const CreateAppointmentSchema = z.object({
   })
 
   export const CancelAppointmentSchema = z.object({
+    schedule: z.coerce.date(),
     notes: z
     .string()
     .min(2, "Reason must be at least 2 characters")

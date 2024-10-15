@@ -41,9 +41,11 @@ const CarBookingForm = ({
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      name: testDrive ? testDrive.name : '',
+      ...(type === "create" && {
+        name: testDrive ? testDrive.name : '',
       email: testDrive ? testDrive.email : '',
       phone: testDrive ? testDrive.phone : '',
+      }),
       schedule: testDrive ? testDrive.schedule :  new Date(),
     },
   })
@@ -199,6 +201,7 @@ const CarBookingForm = ({
 
 {
           type === "cancel" && (
+            <>
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
@@ -206,6 +209,16 @@ const CarBookingForm = ({
               label="Reason for cancellation"
               placeholder="Urgent meeting came up"
             />
+
+            <CustomFormField
+            fieldType={FormFieldType.DATE_PICKER}
+            control={form.control}
+            name="schedule"
+            label="Expected appointment date"
+            showTimeSelect
+            dateFormat="MM/dd/yyyy  -  h:mm aa"
+          />
+          </>
           )
         }
 

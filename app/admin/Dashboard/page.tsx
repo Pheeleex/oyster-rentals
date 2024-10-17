@@ -3,9 +3,9 @@ import Image from "next/legacy/image"
 import Link from 'next/link'
 import StatCard from '@/components/StatCard'
 import { fetchCarBooking } from '@/lib/actions/bookingactions'
-
 import { columns } from '@/components/Table/columns'
 import { DataTable } from '@/components/Table/DataTable'
+
 
 const BookingPage = async () => {
   const testDrives = await fetchCarBooking();
@@ -18,8 +18,6 @@ const BookingPage = async () => {
 
   // Log the appointment IDs
   logAppointmentIds();
-
-  
 
   return (
     <div className='mx-auto flex w-full flex-col space-y-14 bg-[#110716]'>

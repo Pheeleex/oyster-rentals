@@ -89,6 +89,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
 
     // Reduce over appointments to calculate the counts based on status
     const counts = testDriveData.reduce((acc, appointment) => {
+      //@ts-ignore
       if (appointment.status === 'confirmed') {
         acc.scheduledCount += 1;
       } else if (appointment.status === 'pending') {
@@ -187,6 +188,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
 
     // Reduce over appointments to calculate the counts based on status
     const counts = preOrderData.reduce((acc, order) => {
+      //@ts-ignore
       if (order.status === 'confirmed') {
         acc.scheduledCount += 1;
       } else if (order.status === 'pending') {
@@ -265,6 +267,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
 
     // Reduce over appointments to calculate the counts based on status
     const counts = appointmentData.reduce((acc, order) => {
+      //@ts-ignore
       if (order.status === 'confirmed') {
         acc.scheduledCount += 1;
       } else if (order.status === 'pending') {

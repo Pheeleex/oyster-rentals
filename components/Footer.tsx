@@ -15,8 +15,7 @@ function getCookie(name: string) {
   return match ? match[2] : null;
 }
 
-const Footer = ({ searchParams }: SearchParamProps) => {
-  const isAdmin = searchParams?.admin === "true";
+const Footer = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // State to track if modal is open
   const [isModalOpen, setIsModalOpen] = useState(false);

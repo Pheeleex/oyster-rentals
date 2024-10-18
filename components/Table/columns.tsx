@@ -35,7 +35,7 @@ export const columns: ColumnDef<TestDriveProps >[] = [
         return (
           <div className="flex items-center gap-3">
             <Image
-              src={imageUrl} // Use the fallback if the image is undefined
+              src={typeof imageUrl === 'string' ? imageUrl : URL.createObjectURL(imageUrl)} // Use the fallback if the image is undefined
               alt='Car image'
               width={60}
               height={60}

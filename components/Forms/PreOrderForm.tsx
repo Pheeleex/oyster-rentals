@@ -35,17 +35,23 @@ const PreOrderForm = ({
   setOpen?: (open: boolean) => void
 }) => {
   const PreOrderFormValidation = PreOrderFormSchema(type)
-const form = useForm<z.infer<typeof PreOrderFormValidation>>({
-  resolver: zodResolver(PreOrderFormValidation),
-  defaultValues: {
+  const defaultValues = type === "create" ? {
     name: order ? order.name : '',
     email: order ? order.email : '',
     phone: order ? order.phone : '',
-    carManufacturer: type === 'confirm' && order ? order.carManufacturer : (carManufacturer || ''),
-    carModel: type === 'confirm' && order ? order.carModel : (carModel || ''),
-    year: year? year : 2022,
-  }
-})
+    carManufacturer:  carManufacturer || '',
+    carModel:  carModel || '',
+    year: year || 2022,
+    trim: '',
+    method: '',
+    websiteLink: ''
+  } : {
+    notes: ''
+  };
+  const form = useForm<z.infer<typeof PreOrderFormValidation>>({
+    resolver: zodResolver(PreOrderFormValidation),
+    defaultValues
+  });
 
 const router = useRouter()
 

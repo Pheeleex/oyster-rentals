@@ -23,7 +23,6 @@ const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen, bookingSchedul
     const {Drive, FuelType, Make, Model, Transmission, images } = car;
 
     const popUp = (carId: string) => {
-        console.log('you no go show ke?')
         setIsOpen(true)
     }
 

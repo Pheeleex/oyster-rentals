@@ -4,7 +4,10 @@ import { AppointmentProps, PreOrderProps, TestDriveProps } from "@/types";
 import { db } from "@/utils/firebase";
 import { addDoc, collection, doc, getDocs, orderBy, query, Timestamp, updateDoc, where } from "firebase/firestore";
 import { parseStringify } from "../utils";
+import axios from 'axios';
 import { revalidatePath } from "next/cache";
+
+
 
 export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => {
     try {
@@ -100,7 +103,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
       return acc;
     }, initialCounts);
 
-    console.log("Fetched documents:", testDriveData);
+   
 
     const data = {
       totalCount: querySnapshot.size,  // Total number of documents fetched
@@ -113,6 +116,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
   };
   
   export const updateCarBooking = async (userId: string, bookingToUpdate: { testDrive: Partial<TestDriveProps>, type: string }) => {
+    console.log('Update triggered:', bookingToUpdate.testDrive.TestDriveId);
     const TestDriveId = bookingToUpdate.testDrive.TestDriveId; // Get the id from the appointment object
     console.log(TestDriveId, bookingToUpdate.testDrive.TestDriveId,bookingToUpdate.testDrive.notes )
     if (!TestDriveId) {
@@ -128,6 +132,8 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
         // Add any other fields to update if necessary
       });
       console.log('Appointment updated successfully:', TestDriveId);
+
+     
       revalidatePath('/admin/Dashboard')
       return updatedBooking
     } catch (error) {
@@ -138,6 +144,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
 
 
   export const updatePreOrder = async (userId: string, orderToUpdate: { order: Partial<PreOrderProps>, type: string }) => {
+    console.log('update triggered')
     const orderId = orderToUpdate.order.orderId; // Get the id from the appointment object
     console.log(orderId, orderToUpdate.order.notes )
     if (!orderId) {
@@ -152,7 +159,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
         ...orderToUpdate.order
         // Add any other fields to update if necessary
       });
-      console.log('Appointment updated successfully:', orderId);
+     
       revalidatePath('/admin/Dashboard')
       return updatedOrder
     } catch (error) {
@@ -199,7 +206,6 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
       return acc;
     }, initialCounts);
 
-    console.log("Fetched documents:", preOrderData);
 
     const data = {
       totalCount: querySnapshot.size,  // Total number of documents fetched
@@ -278,7 +284,6 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
       return acc;
     }, initialCounts);
 
-    console.log("Fetched documents:", appointmentData);
 
     const data = {
       totalCount: querySnapshot.size,  // Total number of documents fetched

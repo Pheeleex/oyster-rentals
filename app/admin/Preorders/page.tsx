@@ -10,7 +10,6 @@ import React from 'react'
 
 const PreOrderPage = async () => {
     const preOrders = await fetchPreOrder()
-    console.log(preOrders)
   return (
     <div className='mx-auto flex w-full flex-col space-y-14 bg-[#110716]'>
       <header className='admin-header'>

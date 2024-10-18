@@ -34,21 +34,18 @@ const CarTrade = ({
         });
 
         const cars = response.cars;
-        console.log(response, 'res')
-
         setAllCars(cars);
         const isEmpty = !Array.isArray(cars) || cars.length < 1 || !cars;
         if(isEmpty){
             setIsDataEmpty(true)
         }
-        console.log(isEmpty, isDataEmpty, 'why you go empty?')
       } catch (error) {
         console.log('Error fetching cars:', error); 
       }
     };
     getCars(); 
   }, [initialLimit]);
-  console.log(allCars, 'cars');
+
 
   return (
     <div className="mt-12 padding-y padding-x max-width">

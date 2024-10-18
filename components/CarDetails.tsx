@@ -42,7 +42,6 @@ const CarDetails = ({
 
     const showPreOrderForm = () => {
         setShowForm(true);
-        console.log(showForm);
     };
 
     return (

@@ -11,7 +11,6 @@ import React from 'react'
 
 const Appointments = async () => {
     const appointments = await fetchAppointments()
-    console.log(appointments)
   return (
     <div className='mx-auto flex w-full flex-col space-y-14 bg-[#110716]'>
       <main className="admin-main">

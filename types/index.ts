@@ -50,8 +50,8 @@ export interface PreOrderProps{
   carManufacturer?: string;
   carModel?: string;
   trim?: string;
-  year?: string;
-  method?: 'Yes' | 'No';
+  year?: number;
+  method?: 'Yes I have found one online' | 'No, I would like you to search for me';
   link?: string;
   orderId?: string
   carId?: string

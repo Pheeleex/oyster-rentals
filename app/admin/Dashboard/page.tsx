@@ -9,11 +9,9 @@ import { DataTable } from '@/components/Table/DataTable'
 
 const BookingPage = async () => {
   const testDrives = await fetchCarBooking();
-  console.log(testDrives, typeof testDrives?.scheduledCount)
   // Function to extract and log all appointment IDs
   const logAppointmentIds = () => {
     const appointmentIds = testDrives?.documents?.map((appointment: any) => appointment.TestDriveId) || [];
-    console.log("Appointment IDs:", appointmentIds);
   };
 
   // Log the appointment IDs

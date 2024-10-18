@@ -83,9 +83,8 @@ export const CreateAppointmentSchema = z.object({
       .max(50, "Website link must be at most 50 characters")
       .optional(), // Make it optional by default
       notes: z
-    .string()
-    .min(2, "Reason must be at least 2 characters")
-    .max(500, "Reason must be at most 500 characters"),
+      .string()
+      .optional(),
   })
 
   export const ConfirmPreOrderSchema = z.object({

@@ -6,6 +6,7 @@ import JoinUs from "./JoinUs";
 import CarBookingForm from "./Forms/CarBookingForm";
 import CustomButton from "./CustomButton";
 import PreOrderForm from "./Forms/PreOrderForm";
+import { generateCarImageUrl } from "@/utils";
 
 interface CarDetailsProps {
     isOpen: boolean;
@@ -90,7 +91,10 @@ const CarDetails = ({
                                     <div className='flex-1 flex flex-col gap-3'>
                                         <div className='relative w-full h-40 bg-pattern bg-cover bg-center rounded-lg'>
                                             <Image 
-                                                src={car && isCarSpecProps(car) && car.images ? car.images[0] : '/hero.png'}
+                                                src={car && isCarSpecProps(car) && car.images ? 
+                                                    car.images[0] : 
+                                                    (isCarProps(car!) ? generateCarImageUrl(car) : 'hero/png')
+                                                }
                                                 alt="car"
                                                 fill 
                                                 priority 
@@ -102,7 +106,8 @@ const CarDetails = ({
                                             {Array.from({ length: 3 }, (_, index) => (
                                                 <div key={index} className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
                                                     <Image 
-                                                        src={car && isCarSpecProps(car) && car.images ? car.images[index + 1] : '/hero.png'}
+                                                        src={car && isCarSpecProps(car) && car.images ? car.images[index + 1] : 
+                                                            (isCarProps(car!) ? generateCarImageUrl(car) : 'hero/png')}
                                                         alt="car"
                                                         fill 
                                                         priority 

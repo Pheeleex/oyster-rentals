@@ -23,7 +23,7 @@ const CarBookingForm = ({
   carManufacturer,
   bookingSchedule,
   setOpen,
-  closeModal
+  booked
 }: {
   type: "create" | "cancel" | "confirm",
   testDrive?: TestDriveProps,
@@ -32,12 +32,13 @@ const CarBookingForm = ({
   carModel?: string,
   carManufacturer?: string,
   bookingSchedule?: Date  | null
-  closeModal?: () => void;
+  closeModal?: () => void
+  booked?: () => void
   setOpen?: (open: boolean) => void
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<SetStateAction<string>>('')
-
+  const [error, setError] = useState<string>('')
+  const [success, setSuccess] = useState<boolean>(false)
   const AppointmentFormValidation = getAppointmentSchema(type)
   
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
@@ -83,7 +84,8 @@ const CarBookingForm = ({
 
         if (appointment) {
           form.reset();
-          closeModal!()
+          booked!()
+          setIsLoading(false)
         } else {
           setError(error);
         }
@@ -102,10 +104,19 @@ const CarBookingForm = ({
         const updatedAppointment = await updateCarBooking(TestDriveId!, updatedTestDrive)
           setOpen?.(false);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
-      setError(error);
-    } finally {
+      
+      // Check if error is an instance of Error and get the message
+      if (error instanceof Error) {
+          setError(error.message);
+          setIsLoading(false)
+      } else {
+          // Otherwise, convert the error to string
+          setError(String(error));
+          setIsLoading(false)
+      }
+  } finally {
       setIsLoading(false);
     }
   }
@@ -119,6 +130,20 @@ const CarBookingForm = ({
               <h1 className="header">Book a test drive 👋</h1>
               <p className="text-dark-700">Set a date for the vehicle inspection and test drive</p>
             </section>
+
+              {/* Success and Error Messages */}
+        {success && (
+          <div className="success-message fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 
+          text-white py-2 px-4 rounded-lg shadow-lg transition-opacity duration-500 ease-in-out">
+            Details submitted successfully!
+          </div>
+        )}
+        {error && (
+          <div className="error-message fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 
+          text-white py-2 px-4 rounded-lg shadow-lg transition-opacity duration-500 ease-in-out">
+            {error}
+          </div>
+        )}
 
                {
                   type === 'create' && (

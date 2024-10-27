@@ -18,9 +18,17 @@ interface CarCardProps {
 
 const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen, bookingSchedule }: CarCardProps) => {
     const [isOpen, setIsOpen] = useState(false) 
+    const [error, setError] = useState<string>('')
+    const [success, setSuccess] = useState<boolean>(false)
 
 
     const {Drive, FuelType, Make, Model, Transmission, images } = car;
+
+    const testDriveBooked = () => {
+        setIsOpen(false)
+        setSuccess(true)
+          setTimeout(() => setSuccess(false), 3000);
+    }
 
     const popUp = (carId: string) => {
         setIsOpen(true)
@@ -33,6 +41,12 @@ const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen, bookingSchedul
   return (
     <div className="car-card group">
       <div className="car-card__content">
+      {success && (
+          <div className="success-message fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 
+          text-white py-2 px-4 rounded-lg shadow-lg transition-opacity duration-500 ease-in-out">
+            Details submitted successfully!
+          </div>
+        )}
         <h2 className="car-card__content-title">
           {Make} {Model}
         </h2>
@@ -101,6 +115,7 @@ const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen, bookingSchedul
             detailsOpen && (
                 <CarDetails isOpen={isOpen}
                 closeModal={() => setIsOpen(false)}
+                booked ={testDriveBooked}
                 showBookingForm={showBookingForm}
                 car={car}
                 bookingSchedule={bookingSchedule}

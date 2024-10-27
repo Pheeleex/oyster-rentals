@@ -38,7 +38,8 @@ export default async function Home({ searchParams }: HomeProps) {
   console.log(searchParams, 'params');
 
   const bookingData = await fetchCarBooking();
-console.log(bookingData, 'bookingData');
+
+ 
 
 // Access the 'documents' array which contains the bookings
 const bookings = bookingData.documents || []; // Default to an empty array if undefined
@@ -54,9 +55,6 @@ const bookingsMap: { [key: string]: Date | null } = bookings.reduce((acc: { [key
   return acc;
 }, {} as { [key: string]: Date | null });
 
-console.log(bookingsMap, 'bookingsMap'); // Debug the mapping
-
-console.log(bookingsMap, 'bookingsMap'); // Debug the mapping
 
   return (
     <main className="overflow-hidden">

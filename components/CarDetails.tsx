@@ -10,6 +10,7 @@ import PreOrderForm from "./Forms/PreOrderForm";
 interface CarDetailsProps {
     isOpen: boolean;
     closeModal: () => void;
+    booked?: () => void;
     car?: CarSpecProps | CarProps | null;
     showBookingForm?: boolean; // New prop to conditionally render the booking form
     bookingSchedule?: Date | null;
@@ -20,6 +21,7 @@ const CarDetails = ({
     closeModal,
     car,
     showBookingForm = false,
+    booked,
     bookingSchedule,
 }: CarDetailsProps) => {
     const [bookingStatus, setBookingStatus] = useState<string | null>(null);
@@ -119,6 +121,7 @@ const CarDetails = ({
                                                 carManufacturer={carManufacturer || ''}
                                                 carId={carId || ''}
                                                 closeModal={closeModal}
+                                                booked={booked}
                                             />
                                             {bookingStatus && (
                                                 <p className="mt-4 text-red-500">

@@ -32,7 +32,7 @@ const CarBookingForm = ({
   carModel?: string,
   carManufacturer?: string,
   bookingSchedule?: Date  | null
-  closeModal: () => void;
+  closeModal?: () => void;
   setOpen?: (open: boolean) => void
 }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -83,7 +83,7 @@ const CarBookingForm = ({
 
         if (appointment) {
           form.reset();
-          closeModal()
+          closeModal!()
         } else {
           setError(error);
         }

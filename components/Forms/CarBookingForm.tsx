@@ -22,7 +22,8 @@ const CarBookingForm = ({
   carModel,
   carManufacturer,
   bookingSchedule,
-  setOpen
+  setOpen,
+  closeModal
 }: {
   type: "create" | "cancel" | "confirm",
   testDrive?: TestDriveProps,
@@ -31,6 +32,7 @@ const CarBookingForm = ({
   carModel?: string,
   carManufacturer?: string,
   bookingSchedule?: Date  | null
+  closeModal: () => void;
   setOpen?: (open: boolean) => void
 }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -81,6 +83,7 @@ const CarBookingForm = ({
 
         if (appointment) {
           form.reset();
+          closeModal()
         } else {
           setError(error);
         }

@@ -44,6 +44,8 @@ const CarDetails = ({
         setShowForm(true);
     };
 
+   
+
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
@@ -116,6 +118,7 @@ const CarDetails = ({
                                                 carModel={carModel || ''}
                                                 carManufacturer={carManufacturer || ''}
                                                 carId={carId || ''}
+                                                closeModal={closeModal}
                                             />
                                             {bookingStatus && (
                                                 <p className="mt-4 text-red-500">

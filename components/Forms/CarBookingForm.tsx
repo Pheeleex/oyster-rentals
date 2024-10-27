@@ -160,6 +160,14 @@ const CarBookingForm = ({
                     showTimeSelect
                     dateFormat="MM/dd/yyyy  -  h:mm aa"
                   />
+
+          <CustomFormField
+          fieldType={FormFieldType.TEXTAREA}
+          control={form.control}
+          name="notes"
+          label="Comments/Notes"
+          placeholder="Prefer afternoon appointments, if possible"
+        />
                 </div>
                       </>
                   )

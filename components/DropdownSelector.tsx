@@ -16,28 +16,28 @@ const DropdownSelector: React.FC<DropdownSelectorProps> = ({ onSelectionChange }
   };
 
   return (
-    <div className="relative inline-block w-full max-w-xs ml-[38%]">
-      <select
-        value={selectedOption}
-        onChange={handleSelectionChange}
-        className="block w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-150"
+    <div className="relative inline-block w-full max-w-xs ml-auto mr-auto md:ml-[38%]">
+    <select
+      value={selectedOption}
+      onChange={handleSelectionChange}
+      className="block w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-150"
+    >
+      <option value="testdrives">Testdrives</option>
+      <option value="preorders">Preorders</option>
+      <option value="repairs">Repairs</option>
+    </select>
+    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+      <svg
+        className="w-5 h-5 text-gray-400"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
       >
-        <option value="testdrives">Testdrives</option>
-        <option value="preorders">Preorders</option>
-        <option value="repairs">Repairs</option>
-      </select>
-      <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-        <svg
-          className="w-5 h-5 text-gray-400"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </div>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+      </svg>
     </div>
+  </div>  
   );
 };
 

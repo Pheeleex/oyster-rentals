@@ -28,7 +28,7 @@ const page = async({searchParams}: HomeProps) => {
             <p>Make your custom orders here</p>
         </div>
       </div>
-      <div className='home__filters p-24'>
+      <div className='home__filters p-12 pt-24'>
           <SearchBar />
           <div className='home__filter-container'>
             <CustomFilter title='fuel' options={fuels}/>

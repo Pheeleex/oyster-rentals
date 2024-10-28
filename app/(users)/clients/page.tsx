@@ -50,7 +50,7 @@ useEffect(() => {
         <div className="container mx-auto text-center mt-12">
           <h1 className="text-3xl font-bold">Welcome, {userName}!</h1>
           <div className="mt-4 text-xl">
-            <p>Your Range Rover Velar Awaits</p>
+            <p>Track your preorder progress</p>
           </div>
         </div>
       </header>

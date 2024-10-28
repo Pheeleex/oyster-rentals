@@ -213,7 +213,15 @@ const CarBookingForm = ({
       </div>
 
       {/* Other fields remain editable */}
-      <div className="flex flex-col gap-16 xl:flex-row">
+      <div className="flex flex-col gap-10 xl:flex-row">
+      <CustomFormField
+          fieldType={FormFieldType.TEXTAREA}
+          control={form.control}
+          name="notes"
+          label="Comments/Notes"
+          placeholder="Prefer afternoon appointments, if possible"
+        />
+
         <CustomFormField
           fieldType={FormFieldType.DATE_PICKER}
           control={form.control}
@@ -221,14 +229,6 @@ const CarBookingForm = ({
           label="Expected appointment date"
           showTimeSelect
           dateFormat="MM/dd/yyyy  -  h:mm aa"
-        />
-
-        <CustomFormField
-          fieldType={FormFieldType.TEXTAREA}
-          control={form.control}
-          name="notes"
-          label="Comments/Notes"
-          placeholder="Prefer afternoon appointments, if possible"
         />
       </div>
     </div>

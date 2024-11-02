@@ -133,5 +133,18 @@ export interface SearchManuFacturerProps {
     imageFiles?: File []
   }
 
+
+  export interface TradeProps{
+    name?: string;
+    phone?:string;
+    email?: string;
+    carManufacturer?: string;
+    carModel?: string;
+    trim?: string;
+    year?: number;
+    carId?: string
+    notes?: string
+  }
+
   export type SetCars = Dispatch<SetStateAction<CarSpecProps[]>>
   export type SetTestDrive = Dispatch<SetStateAction<TestDriveProps[]>>

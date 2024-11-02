@@ -25,17 +25,9 @@ export default async function Home({ searchParams }: HomeProps) {
   });
 
   const allCars = response.cars;
-  console.log(allCars, 'cars');
 
   const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
 
-  if (isDataEmpty) {
-    console.log('No data available');
-  } else {
-    console.log('Data available');
-  }
-
-  console.log(searchParams, 'params');
 
   const bookingData = await fetchCarBooking();
 
@@ -98,7 +90,6 @@ const bookingsMap: { [key: string]: Date | null } = bookings.reduce((acc: { [key
           </div>
         )}
       </div>
-      
       <Services />
     </main>
   );

@@ -1,11 +1,8 @@
 'use client';
-import { CarSpecProps } from "@/types";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import 'react-calendar/dist/Calendar.css'; 
-import CustomButton from "./CustomButton";
-import { getCarBookingDetails } from "@/utils";
 import ScheduleForm from "./Forms/ScheduleForm";
 
 interface CarDetailsProps {

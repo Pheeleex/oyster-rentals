@@ -1,12 +1,13 @@
 import CarCard from "@/components/CarCard";
 import CustomFilter from "@/components/CustomFilter";
 import Hero from "@/components/Hero";
+import SaveCarsToLocalStorage from "@/components/SaveCars";
 import SearchBar from "@/components/SearchBar";
 import Services from "@/components/Services";
 import ShowMore from "@/components/ShowMore";
 import { fuels, yearsOfProduction } from "@/constants";
 import { fetchCarBooking } from "@/lib/actions/bookingactions";
-import { HomeProps, TestDriveProps } from "@/types";
+import { HomeProps } from "@/types";
 import fetchCars from "@/utils/firebase";
 
 interface Booking {
@@ -30,7 +31,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
 
   const bookingData = await fetchCarBooking();
-
+ 
  
 
 // Access the 'documents' array which contains the bookings
@@ -38,7 +39,8 @@ const bookings = bookingData.documents || []; // Default to an empty array if un
 
 // Create a map of bookings using carId as the key
 // Create a map of bookings using carId as the key
-const bookingsMap: { [key: string]: Date | null } = bookings.reduce((acc: { [key: string]: Date | null }, booking: Booking) => {
+const bookingsMap: { [key: string]: Date | null } = bookings.reduce((acc: { [key: string]: Date | null }, 
+  booking: Booking) => {
   if (booking.schedule) {  // Add check for valid schedule
     acc[booking.carId] = new Date(booking.schedule);
   } else {
@@ -50,6 +52,7 @@ const bookingsMap: { [key: string]: Date | null } = bookings.reduce((acc: { [key
 
   return (
     <main className="overflow-hidden">
+      <SaveCarsToLocalStorage cars={allCars} />
       <Hero />
       <div className='mt-12 padding-x padding-y max-width' id='discover'>
         <div className='home__text-container'>

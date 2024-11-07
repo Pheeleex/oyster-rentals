@@ -18,7 +18,6 @@ const UnknownCard = ({ buttonTitle, showBookingForm,detailsOpen }: CarCardProps)
 
 
     const popUp = (carId: string) => {
-        console.log('you no go show ke?')
         setIsOpen(true)
     }
   return (

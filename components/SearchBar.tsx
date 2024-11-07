@@ -48,7 +48,6 @@ const SearchBar = () => {
 
         if(manufacturer){
           searchParams.set('manufacturer', manufacturer)
-          console.log('manufacturer', manufacturer)
         }
         else{
           searchParams.delete('manufacturer')

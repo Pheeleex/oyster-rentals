@@ -79,7 +79,6 @@ const CarBookingForm = ({
           carModel: carModel,
           status: status as Status
         }
-        console.log(appointmentData)
         const appointment = await  createCarBooking(appointmentData);
 
         if (appointment) {

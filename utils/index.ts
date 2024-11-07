@@ -87,43 +87,11 @@ export interface Booking {
   endDate: Date;
 }
 
-export const saveBooking = (booking: Booking) => {
-  const bookings = getBookings();
-  bookings.push(booking);
-  localStorage.setItem('bookings', JSON.stringify(bookings));
-};
 
-export const getBookings = (): Booking[] => {
-  if (typeof window !== "undefined") {
-    const bookings = localStorage.getItem('bookings');
-    return bookings ? JSON.parse(bookings) : [];
-  }
-  return [];
-};
 
-export const isCarBooked = (carId: string, startDate: Date, endDate: Date): boolean => {
-  const bookings = getBookings();
 
-  return bookings.some((booking) => {
-    return (
-      booking.carId === carId &&
-      ((startDate >= new Date(booking.startDate) && startDate <= new Date(booking.endDate)) ||
-        (endDate >= new Date(booking.startDate) && endDate <= new Date(booking.endDate)))
-    );
-  });
-};
 
-export const getCarBookingDetails = () => {
-  const bookingDetails = localStorage.getItem('carBookingDetails')
-  if(bookingDetails){
-    try {
-      return JSON.parse(bookingDetails)
-    } catch (error) {
-      console.error('Error parsing booking details:', error);
-      return null;
-    }
-  }
-}
+
 
 export const generateCarImageUrl = (car?: CarProps, angle?: string) => {
   const url = new URL("https://cdn.imagin.studio/getimage");

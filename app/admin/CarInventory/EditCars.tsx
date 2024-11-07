@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import CarCard from '@/components/CarCard';
 import { CarSpecProps } from '@/types';
 import fetchCars, { deleteCars } from '@/utils/firebase';
-import { getBookings } from '@/utils/firebase'; // Import your Firebase function here
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -25,8 +24,7 @@ const EditCars = ({
 }: EditCarProps) => {
   const [allCars, setAllCars] = useState<CarSpecProps[]>([]);
   const [isDataEmpty, setIsDataEmpty] = useState(false);
-  const [bookings, setBookings] = useState<{ [key: string]: string | null }>({});
-
+ 
   useEffect(() => {
     const getCars = async () => {
       try {
@@ -43,15 +41,7 @@ const EditCars = ({
         const isEmpty = !Array.isArray(cars) || cars.length < 1 || !cars;
         setIsDataEmpty(isEmpty);
 
-        // Fetch booking details for each car
-        if (cars && cars.length > 0) {
-          const bookingsData: { [key: string]: string | null } = {};
-          for (const car of cars) {
-            const bookingDate = await getBookings(car.id!);
-            bookingsData[car.id!] = bookingDate;
-          }
-          setBookings(bookingsData);
-        }
+       
       } catch (error) {
         console.log('Error fetching cars:', error);
       }
@@ -65,17 +55,10 @@ const EditCars = ({
         <section>
           <div className="home__cars-wrapper">
             {allCars?.map((car, index) => {
-              const bookingDate = bookings[car.id!];
               return (
                 <div
                   key={index}
-                  className={`relative ${bookingDate ? 'bg-white bg-opacity-70' : ''}`}
                 >
-                  {bookingDate && (
-                    <h1 className="absolute top-[30%] left-[10%] flex justify-center items-center text-red-500 text-lg font-bold z-20">
-                      Test Drive Booked
-                    </h1>
-                  )}
                   <CarCard
                     buttonTitle="More"
                     car={car}
@@ -87,11 +70,7 @@ const EditCars = ({
                     <div onClick={() => onEdit(car)}>
                       <EditIcon color="primary" />
                     </div>
-                    {bookingDate && (
-                      <div className="text-gray-700">
-                        <p>{`Booked for: ${new Date(bookingDate).toLocaleDateString()}`}</p>
-                      </div>
-                    )}
+                   
                     <div onClick={() => deleteCars(car.id!, car.ImagePath ?? '', setAllCars)}>
                       <DeleteIcon color="primary" />
                     </div>

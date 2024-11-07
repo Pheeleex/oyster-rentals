@@ -23,9 +23,6 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
       // Add the document to Firestore
       const docRef = await addDoc(testDriveRef, testDriveWithTimestamp);
   
-      // Log the document ID and other details
-      console.log('Appointment added successfully:', docRef.id);
-      console.log('Document Reference:', docRef);
       
       // Return the document ID or other useful information
       return testDriveWithTimestamp
@@ -48,16 +45,12 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
       // Add the document to Firestore
       const docRef = await addDoc(preOrderRef, preOrderWithTimestamp);
   
-      // Log the document ID and other details
-      console.log('Appointment added successfully:', docRef.id);
-      console.log('Document Reference:', docRef);
-      
+     
       // Return the document ID or other useful information
       const newPreOrder = {
         ...preOrderWithTimestamp,
         orderId: docRef.id
       };
-      console.log(newPreOrder)
       return newPreOrder
     } catch (error) {
       console.error('Error adding appointment:', error);
@@ -116,9 +109,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
   };
   
   export const updateCarBooking = async (userId: string, bookingToUpdate: { testDrive: Partial<TestDriveProps>, type: string }) => {
-    console.log('Update triggered:', bookingToUpdate.testDrive.TestDriveId);
     const TestDriveId = bookingToUpdate.testDrive.TestDriveId; // Get the id from the appointment object
-    console.log(TestDriveId, bookingToUpdate.testDrive.TestDriveId,bookingToUpdate.testDrive.notes )
     if (!TestDriveId) {
       throw new Error("Appointment ID is required for updating an appointment.");
     }
@@ -131,9 +122,6 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
         ...bookingToUpdate.testDrive,
         // Add any other fields to update if necessary
       });
-      console.log('Appointment updated successfully:', TestDriveId);
-
-     
       revalidatePath('/admin/Dashboard')
       return updatedBooking
     } catch (error) {
@@ -144,9 +132,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
 
 
   export const updatePreOrder = async (userId: string, orderToUpdate: { order: Partial<PreOrderProps>, type: string }) => {
-    console.log('update triggered')
     const orderId = orderToUpdate.order.orderId; // Get the id from the appointment object
-    console.log(orderId, orderToUpdate.order.notes )
     if (!orderId) {
       throw new Error("Appointment ID is required for updating an appointment.");
     }
@@ -229,16 +215,10 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
   
       // Add the document to Firestore
       const docRef = await addDoc(scheduleRef, scheduleWithTimestamp);
-  
-      // Log the document ID and other details
-      console.log('Appointment added successfully:', docRef.id);
-      console.log('Document Reference:', docRef);
-      
       // Return the document ID or other useful information
       const newAppointment= {
         ...scheduleWithTimestamp,
       };
-      console.log(newAppointment)
       return newAppointment
     } catch (error) {
       console.error('Error adding appointment:', error);
@@ -297,7 +277,6 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
 
   export const updateSchedule = async (userId: string, appointmentToUpdate: { appointment: Partial<AppointmentProps>, type: string }) => {
     const appointmentId = appointmentToUpdate.appointment.appointmentId; // Get the id from the appointment object
-    console.log(appointmentId, appointmentToUpdate.appointment.reason)
     if (!appointmentId) {
       throw new Error("Appointment ID is required for updating an appointment.");
     }
@@ -309,7 +288,6 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
         ...appointmentToUpdate.appointment
         // Add any other fields to update if necessary
       });
-      console.log('Appointment updated successfully:', appointmentId);
       revalidatePath('/admin/Dashboard')
       return updatedAppointment
     } catch (error) {

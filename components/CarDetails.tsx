@@ -7,6 +7,8 @@ import CarBookingForm from "./Forms/CarBookingForm";
 import CustomButton from "./CustomButton";
 import PreOrderForm from "./Forms/PreOrderForm";
 import { generateCarImageUrl } from "@/utils";
+import ImageGallery from "./ImageGallery";
+import PreOrderSection from "./PreOrderSection";
 
 interface CarDetailsProps {
     isOpen: boolean;
@@ -14,8 +16,8 @@ interface CarDetailsProps {
     booked?: () => void;
     car?: CarSpecProps | CarProps | null;
     showBookingForm?: boolean; // New prop to conditionally render the booking form
-    bookingSchedule?: Date | null;
 }
+
 
 const CarDetails = ({
     isOpen,
@@ -23,9 +25,7 @@ const CarDetails = ({
     car,
     showBookingForm = false,
     booked,
-    bookingSchedule,
 }: CarDetailsProps) => {
-    const [bookingStatus, setBookingStatus] = useState<string | null>(null);
     const [showForm, setShowForm] = useState(false);
 
     // Type guard to determine if `car` is `CarSpecProps`
@@ -88,36 +88,13 @@ const CarDetails = ({
                                             height={20}
                                         />
                                     </button>
-                                    <div className='flex-1 flex flex-col gap-3'>
-                                        <div className='relative w-full h-40 bg-pattern bg-cover bg-center rounded-lg'>
-                                            <Image 
-                                                src={car && isCarSpecProps(car) && car.images ? 
-                                                    car.images[0] : 
-                                                    (isCarProps(car!) ? generateCarImageUrl(car) : 'hero/png')
-                                                }
-                                                alt="car"
-                                                fill 
-                                                priority 
-                                                className='object-contain' 
-                                            />
-                                        </div>
-
-                                        <div className='flex gap-3'>
-                                            {Array.from({ length: 3 }, (_, index) => (
-                                                <div key={index} className='flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg'>
-                                                    <Image 
-                                                        src={car && isCarSpecProps(car) && car.images ? car.images[index + 1] : 
-                                                            (isCarProps(car!) ? generateCarImageUrl(car) : 'hero/png')}
-                                                        alt="car"
-                                                        fill 
-                                                        priority 
-                                                        className='object-contain' 
-                                                    />
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
+                                        <ImageGallery 
+                                            car={car}
+                                            isCarProps={isCarProps}
+                                            isCarSpecProps={isCarSpecProps}
+                                        />
+                                    {/*If show booking form is true render car booking form, else show the
+                                    pre order car properties and preOrderSection*/}
                                     {showBookingForm ? (
                                         <div>
                                             <CarBookingForm
@@ -128,55 +105,16 @@ const CarDetails = ({
                                                 closeModal={closeModal}
                                                 booked={booked}
                                             />
-                                            {bookingStatus && (
-                                                <p className="mt-4 text-red-500">
-                                                    {bookingStatus}
-                                                </p>
-                                            )}
+                                           
                                             <JoinUs />
                                         </div>
-                                    ) : (
-                                        <div className="flex-1 flex flex-col gap-2">
-                                            <h2 className='font-semibold text-xl capitalize'>
-                                                {car && isCarProps(car) ? `${car.make} ${car.model}` : 'Unknown Car'}
-                                            </h2>
-
-                                            {car ? (
-                                                <div className="mt-3 flex flex-wrap gap-4">
-                                                    {Object.entries(car).map(([key, value]) => (
-                                                        <div className='flex justify-between gap-5 w-full text-right' key={key}>
-                                                            <h4 className='text-grey capitalize'>
-                                                                {key.split("_").join(" ")}
-                                                            </h4>
-                                                            <p className='text-black-100 font-semibold'>
-                                                                {value}
-                                                            </p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ) : (
-                                                <p>No car available. Please pre-order.</p>
-                                            )}
-                                            
-                                            <CustomButton
-                                                title="Pre-order now"
-                                                btnType="button"
-                                                containerStyles="bg-blue-500 p-2 text-blue-950 w-[200px] rounded lg:ml-[30%]"
-                                                handleClick={showPreOrderForm}
-                                            />
-
-                                            {!car ? (
-                                                <PreOrderForm type='create' />
-                                            ) : isCarProps(car) && (
-                                                <PreOrderForm
-                                                    carManufacturer={car.make}
-                                                    carModel={car.model}
-                                                    year={car.year}
-                                                    carId={car.id}
-                                                    type='create'
-                                                />
-                                            )}
-                                        </div>
+                                    ) 
+                                        : 
+                                    (
+                                        <PreOrderSection
+                                            car={car}
+                                            isCarProps={isCarProps}
+                                        />
                                     )}
                                 </DialogPanel>
                             </TransitionChild>

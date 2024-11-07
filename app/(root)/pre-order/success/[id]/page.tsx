@@ -15,31 +15,11 @@ const Page = () => {
   const [preorderDetails, setPreorderDetails] = useState<PreOrderProps | null>(null); 
   // Log the user ID to confirm it's correct
   useEffect(() => {
-    console.log('User ID from URL:', id);
-
-    const getPreorderDetails = async () => {
-      try {
-        const data = await fetchPreOrder(); // Call the fetch function without userId to get all preorders
-        // Check if the userId matches any of the fetched preorder userIds
-        console.log(data)
-        const documents = data.documents as PreOrderProps[]
-        const foundUser = documents.find((order) => order.userId === id);
-        
-        if (foundUser) {
-          console.log('Found user:', foundUser); // Log the found user details
-          setPreorderDetails(foundUser); // Set the found user details to state
-        } else {
-          console.log('No matching user found.'); // Log if no user is found
-        }
-      } catch (error) {
-        console.error("Error fetching preorder details:", error);
-      }
-    };
-getPreorderDetails()  
+    const storedOrderData = sessionStorage.getItem(`orderData-${id}`);
+    if (storedOrderData) {
+      setPreorderDetails(JSON.parse(storedOrderData));
+    }
   }, []);
-
-  
-
 
   const handleSignIn = async () => {
     const isSignedIn = await signInWithGoogle();
@@ -68,7 +48,7 @@ getPreorderDetails()
             alt="success"
           />
           <h2 className="header mb-6 max-w-[600px] text-center">
-            Your <span className="text-green-500">preorder request</span> has
+           {preorderDetails?.name} your <span className="text-green-500">preorder request</span> has
             been successfully submitted!
           </h2>
           <p>Create an account with us to see real-time updates and track your order.</p>

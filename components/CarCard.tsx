@@ -118,7 +118,6 @@ const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen, bookingSchedul
                 booked ={testDriveBooked}
                 showBookingForm={showBookingForm}
                 car={car}
-                bookingSchedule={bookingSchedule}
                 /> 
             )
            }

@@ -26,7 +26,6 @@ const page = () => {
       })
       await signOut(auth)
       router.push('/')
-      console.log('auth')
     }
 
     const {register,
@@ -38,11 +37,10 @@ const page = () => {
     } = useForm<CarSpecProps>()
 
     const handleEdit = (data: CarSpecProps) => {
-      console.log(data, 'CarspecProps Data')
+      /*Populate data to its respective form fields */
       Object.keys(data).forEach((key) => {
         const field = key as keyof CarSpecProps
         setValue(field, data[field])
-        console.log(data[field], 'fields')
       });
       setValue('imageFiles', []);
       setIsEditing(true)
@@ -89,7 +87,6 @@ const page = () => {
         reset()
       }
             else{
-              console.log(data)
             const carData = {
                           ...data, 
                           id: uuidv4()

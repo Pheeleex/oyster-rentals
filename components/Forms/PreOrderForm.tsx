@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form, FormControl } from "../ui/form"
-import CustomButton from "../CustomButton"
 import CustomFormField, { FormFieldType } from "../CustomFormField"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Label } from "../ui/label"
@@ -58,10 +57,6 @@ const router = useRouter()
 const [isLoading, setIsLoading] = useState(false)
 
 async function onSubmit(values: z.infer<typeof PreOrderFormValidation>) {
-  console.log('clicked')
-  console.log(values, 'values')
-  console.log('you see the values?')
-
     setIsLoading(true)
     
     let status: string;
@@ -85,13 +80,11 @@ async function onSubmit(values: z.infer<typeof PreOrderFormValidation>) {
           status: status as Status,
           userId: v4()
         }
-        console.log(orderData, 'orderData')
         const order = await  createPreOrder(orderData);
         if(order){
+          sessionStorage.setItem(`orderData-${order.userId}`, JSON.stringify(orderData));
           router.push(`pre-order/success/${order.userId}`)
         }
-       // Log the success message and new order details
-       console.log(`Order with id: ${order.orderId} for ${order.name} is being processed`)
       }
       else{
         const updatedPreOrder = {
@@ -105,7 +98,6 @@ async function onSubmit(values: z.infer<typeof PreOrderFormValidation>) {
       }
       const updatedAppointment = await updatePreOrder(orderId!, updatedPreOrder)
         setOpen?.(false);
-
       }
   } catch (error) {
     console.log('Error processing the order:', error)

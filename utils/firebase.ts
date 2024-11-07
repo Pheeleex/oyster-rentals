@@ -42,7 +42,6 @@ Promise<{ cars: CarSpecProps[], lastVisible: any }> => {
       // Apply the manufacturer filter if it's provided
       if (manufacturer) {
         carsQuery = query(carsQuery, where("Make", "==", manufacturer.toLowerCase()));
-        console.log('manufacturer query', carsQuery)
       }
   
       // Apply the model filter if it's provided
@@ -61,8 +60,6 @@ Promise<{ cars: CarSpecProps[], lastVisible: any }> => {
      }
   
       const querySnapshot = await getDocs(carsQuery);
-     /*console.log(carsQuery, 'query')*/
-     console.log(`Number of cars found: ${querySnapshot.docs.length}`);
       // Capture the last visible document for the next page
       const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
   
@@ -116,7 +113,6 @@ if(imageFiles && imageFiles.length > 0){
     await uploadBytes(storageRef, file);
   }
 }
-    console.log('Property and images added successfully');
   } catch (error) {
     console.log(error)
   }
@@ -125,12 +121,8 @@ if(imageFiles && imageFiles.length > 0){
 
 export const updateCars = async(carId: string, updatedData: Partial<CarSpecProps>): Promise<void> => {
 try {
-  console.log('Updating property with ID:', carId);
-    console.log('Updated Data:', updatedData);
-
     const CarRef = doc(db, 'Cars', carId);
     await updateDoc(CarRef, updatedData);
-    console.log('Property updated successfully', carId);
 } catch (error) {
   console.error('Error updating car: ', error);
     throw error;
@@ -149,7 +141,6 @@ export const deleteCars = async(id: string, ImagePath:string, setCars:SetCars): 
     await Promise.all(deletePromises);
 
     setCars((prevCars) => prevCars.filter((car) => car.id !== id ));
-    console.log(`Car with id ${id} deleted successfully`)
   } catch (error) {
     console.error(`Error deleting car with id ${id}:`, error)
   }
@@ -165,20 +156,3 @@ export const SaveBooking = async(carId: string, confirmDates: object) => {
   }
 }
 
-export const getBookings = async(carId: string) => {
-  try {
-    const docRef = doc(db, 'bookings', carId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      const bookingDetails = docSnap.data();
-      return bookingDetails.pickupDate;
-    } else {
-      console.log('No such document!');
-      return null;
-    }
-  } catch (error) {
-    console.error('Error fetching booking details:', error);
-    return null;
-  }
-}

@@ -77,7 +77,7 @@ useEffect(() => {
           <p className="mb-4">Can't find a car you want in our inventory?
             Click here to see a more diverse inventory of cars, place a request and we will get back to you
           </p>
-          <Link href='clients/review' className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+          <Link href='/pre-order' className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
           Visit Directory
           </Link>
         </div>

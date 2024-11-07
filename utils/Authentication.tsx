@@ -19,7 +19,6 @@ export const signInWithGoogle = async (): Promise<boolean> => {
     });
 
     localStorage.setItem("auth", JSON.stringify(authInfo));
-    console.log("Saved to localStorage", authInfo);
     return true; // Sign-in was successful
   } catch (error: any) {
     console.error("Authentication error:", error);

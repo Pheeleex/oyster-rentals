@@ -59,9 +59,6 @@ const ScheduleForm = ({
          userName: userName,
          status: status as Status
       }
-
-      console.log(appointmentData, 'appointmentData')
-
        
       // await scheduleAppointment(appointmentData)
       const serviceAppointment = await ScheduleAppointment(appointmentData)

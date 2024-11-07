@@ -41,8 +41,6 @@ const page = async({searchParams}: HomeProps) => {
                 <Card car={car} />
               ))}
             </div>
-
-
           </section>
         ) : (
           <div className='home__error-container'>

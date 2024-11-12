@@ -6,8 +6,11 @@ import PreOrders from '@/components/Admin/PreOrders';
 import Appointments from '@/components/Admin/Appointments';
 import Link from 'next/link';
 import Image from 'next/image';
+import { fetchCarBooking } from '@/lib/actions/bookingactions';
 
-const AdminPage = () => {
+const AdminPage = async() => {
+  const testDrives = await fetchCarBooking();
+
   return (
     <div className="mx-auto flex w-fit md:w-full flex-col space-y-14 bg-[#110716] px-4 sm:px-8 md:px-16 lg:px-24">
       <header className="admin-header flex flex-col items-center md:flex-row md:justify-between md:items-center py-4">
@@ -30,7 +33,7 @@ const AdminPage = () => {
 
       {/* Client-side dropdown for rendering different sections */}
       <AdminClientWrapper
-        testdrivesComponent={<TestDrives />}
+        testdrivesComponent={<TestDrives testDrivesData={testDrives} />}
         preordersComponent={<PreOrders />}
         repairsComponent={<Appointments />}
       />

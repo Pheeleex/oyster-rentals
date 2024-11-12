@@ -32,14 +32,14 @@ export const columns: ColumnDef<TestDriveProps >[] = [
       accessorKey: 'car',
       header: 'Car',
       cell: ({ row }) => {
-        const imageUrl = row.original.car?.imageFiles?.[0] || '/path/to/fallback-image.jpg'; // Provide a fallback image URL
+        const imageUrl =  row.original.car?.images![0] || '/hero.png'; 
         return (
           <div className="flex items-center gap-3">
             <Image
-              src={typeof imageUrl === 'string' ? imageUrl : URL.createObjectURL(imageUrl)} // Use the fallback if the image is undefined
+              src={imageUrl} // Use the fallback if the image is undefined
               alt='Car image'
-              width={60}
-              height={60}
+              width={40}
+              height={40}
               className='size-8'
             />
             <p className="whitespace-nowrap text-[14px] text-white">

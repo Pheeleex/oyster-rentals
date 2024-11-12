@@ -1,12 +1,3 @@
-// Define the interface based on the structure of the data returned from fetchCarBooking
-interface TestDriveData {
-  scheduledCount: number;
-  pendingCount: number;
-  cancelledCount: number;
-  documents: Array<{ /* define document structure if known */ }>;
-}
-
-// components/Admin/TestDrives.tsx (Client Component)
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -14,6 +5,14 @@ import StatCard from '@/components/StatCard';
 import { fetchCarBooking } from '@/lib/actions/bookingactions';
 import { columns } from '@/components/Table/columns';
 import { DataTable } from '@/components/Table/DataTable';
+
+interface TestDriveData {
+  scheduledCount: number;
+  pendingCount: number;
+  cancelledCount: number;
+  documents: Array<{ /* define document structure if known */ }>;
+}
+
 
 const TestDrives = () => {
   // Use TestDriveData type with useState

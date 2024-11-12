@@ -1,15 +1,30 @@
-import PreOrderbox from '@/components/PreOrderbox'
+'use client'
 import StatCard from '@/components/StatCard'
-import { columns } from '@/components/Table/columns'
 import { DataTable } from '@/components/Table/DataTable'
 import { pocolumns } from '@/components/Table/preOrderColumn'
 import { fetchPreOrder } from '@/lib/actions/bookingactions'
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-const PreOrders = async () => {
-    const preOrders = await fetchPreOrder()
+interface PreOrderData {
+  scheduledCount: number;
+  pendingCount: number;
+  cancelledCount: number;
+  documents: Array<{ /* define document structure if known */ }>;
+}
+
+const PreOrders =  () => {
+     // Use TestDriveData type with useState
+  const [preOrders, setPreOrders] = useState<PreOrderData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchPreOrder();
+      setPreOrders(data)
+    };
+    fetchData();
+  }, []);
+
+  if (!preOrders) return <div>Loading...</div>;
   return (
     <div className='mx-auto flex w-full flex-col space-y-14 bg-[#110716]'>
       <main className="admin-main">

@@ -1,12 +1,7 @@
-import PreOrderbox from '@/components/PreOrderbox'
 import StatCard from '@/components/StatCard'
-import { columns } from '@/components/Table/columns'
 import { DataTable } from '@/components/Table/DataTable'
-import { pocolumns } from '@/components/Table/preOrderColumn'
 import { servicecolumns } from '@/components/Table/servicecolumns'
-import { fetchAppointments, fetchPreOrder } from '@/lib/actions/bookingactions'
-import Image from 'next/image'
-import Link from 'next/link'
+import { fetchAppointments } from '@/lib/actions/bookingactions'
 import React from 'react'
 
 const Appointments = async () => {

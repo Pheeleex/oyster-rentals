@@ -5,10 +5,11 @@ import { ColumnDef } from "@tanstack/react-table"
 import { formatDateTime } from "@/lib/utils"
 import Image from "next/legacy/image"
 
-import { PreOrderProps, TestDriveProps } from "@/types"
+import {  TestDriveProps } from "@/types"
 import { StatusBadge } from "../StatusBadge"
 import AppointmentModal from "../AppointmentModal"
-import { newDate } from "react-datepicker/dist/date_utils"
+import { deleteBooking } from "@/lib/actions/bookingactions"
+
 
 
 
@@ -89,6 +90,7 @@ export const columns: ColumnDef<TestDriveProps >[] = [
             title="Cancel Appointment"
             description="Are you sure you want to cancel your appointment?"
           />
+          
       </div>
       )
     },

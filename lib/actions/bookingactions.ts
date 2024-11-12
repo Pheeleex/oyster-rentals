@@ -1,14 +1,15 @@
 'use server'
 
-import { AppointmentProps, PreOrderProps, TestDriveProps } from "@/types";
+import { AppointmentProps, PreOrderProps, SetTestDrive, TestDriveProps } from "@/types";
 import { db } from "@/utils/firebase";
-import { addDoc, collection, doc, getDocs, orderBy, query, Timestamp, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, updateDoc, where } from "firebase/firestore";
 import { parseStringify } from "../utils";
 import axios from 'axios';
 import { revalidatePath } from "next/cache";
+import { ref } from "firebase/storage";
 
 
-
+/*TESRDRIVES*/
 export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => {
     try {
       const testDriveRef = collection(db, 'carTestDrive');
@@ -129,6 +130,27 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
       throw error; // Propagate the error
     }
   };
+
+  export const deleteBooking = async (
+    id: string,
+    setTestDrive: SetTestDrive
+  ): Promise<void> => {
+    try {
+      // Delete document from Firestore
+      await deleteDoc(doc(db, 'carTestDrive', id));
+      
+      // Update local state to reflect the deletion
+      setTestDrive((prevTest) => prevTest.filter((test) => test.TestDriveId !== id));
+    } catch (error: unknown) {
+      // More robust error logging with type safety for `unknown` error
+      if (error instanceof Error) {
+        console.error(`Error deleting car booking with id ${id}:`, error.message);
+      } else {
+        console.error(`An unknown error occurred while deleting car booking with id ${id}`);
+      }
+    }
+  };
+  
 
 
   export const updatePreOrder = async (userId: string, orderToUpdate: { order: Partial<PreOrderProps>, type: string }) => {

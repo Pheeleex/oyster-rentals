@@ -1,6 +1,4 @@
 import React from 'react'
-import Image from "next/legacy/image"
-import Link from 'next/link'
 import StatCard from '@/components/StatCard'
 import { fetchCarBooking } from '@/lib/actions/bookingactions'
 
@@ -10,9 +8,6 @@ import { DataTable } from '@/components/Table/DataTable'
 const TestDrives = async () => {
   const testDrives = await fetchCarBooking();
   // Function to extract and log all appointment IDs
- 
-  
-
   return (
     <div className='mx-auto flex w-full flex-col space-y-14 bg-[#110716]'>
       <main className="admin-main">

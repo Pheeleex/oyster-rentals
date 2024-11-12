@@ -10,11 +10,13 @@ import EditCars from "./EditCars"
 import { useRef, useState } from "react"
 import { ref, uploadBytes } from "firebase/storage"
 import { destroyCookie } from "nookies"
+import SubmitButton from "@/components/SubmitButton"
 
 
 const page = () => {
     const router = useRouter()
     const [isEditing, setIsEditing] = useState(false)
+    const [isLoading, setisLoading] = useState(false)
     const formRef = useRef<HTMLDivElement>(null);
 
     const handleSignOut = async() => {
@@ -198,7 +200,7 @@ const page = () => {
               <p className="text-red-900">{errors.ImagePath?.message}</p>
             )}
           </div>
-          <button className="bg-white text-blue-400 p-2 rounded">Submit</button>
+          <SubmitButton isLoading={isLoading}>Submit </SubmitButton>
             </form>
         </div>
             <EditCars onEdit={handleEdit}

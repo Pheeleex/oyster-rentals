@@ -1,4 +1,3 @@
-'use client'
 import StatCard from '@/components/StatCard'
 import { DataTable } from '@/components/Table/DataTable'
 import { pocolumns } from '@/components/Table/preOrderColumn'
@@ -12,19 +11,8 @@ interface PreOrderData {
   documents: Array<{ /* define document structure if known */ }>;
 }
 
-const PreOrders =  () => {
-     // Use TestDriveData type with useState
-  const [preOrders, setPreOrders] = useState<PreOrderData | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchPreOrder();
-      setPreOrders(data)
-    };
-    fetchData();
-  }, []);
-
-  if (!preOrders) return <div>Loading...</div>;
+const PreOrders =  async() => {
+  const preOrders = await fetchPreOrder()
   return (
     <div className='mx-auto flex w-full flex-col space-y-14 bg-[#110716]'>
       <main className="admin-main">

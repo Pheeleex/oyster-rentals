@@ -8,6 +8,7 @@ export const signInWithGoogle = async (): Promise<boolean> => {
     await signInWithPopup(auth, provider);
     const authInfo = {
       userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
       name: auth.currentUser?.displayName,
       isAuth: true,
     };

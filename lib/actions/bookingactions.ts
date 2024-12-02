@@ -33,32 +33,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
     }
   };
 
-  export const createPreOrder = async ({orderId, ...testDrive}:PreOrderProps) => {
-    try {
-      const preOrderRef = collection(db, 'carPreOrder');
-      
-      // Include the createdAt field with the current timestamp
-      const preOrderWithTimestamp = {
-        ...testDrive,
-        createdAt: Timestamp.fromDate(new Date()),
-      };
   
-      // Add the document to Firestore
-      const docRef = await addDoc(preOrderRef, preOrderWithTimestamp);
-  
-     
-      // Return the document ID or other useful information
-      const newPreOrder = {
-        ...preOrderWithTimestamp,
-        orderId: docRef.id
-      };
-      return newPreOrder
-    } catch (error) {
-      console.error('Error adding appointment:', error);
-      throw error;
-    }
-  };
-
 
   export const fetchCarBooking = async () => {
     const carBookingRef = collection(db, 'carTestDrive');
@@ -151,6 +126,33 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
     }
   };
   
+//PREORDERS
+
+export const createPreOrder = async ({orderId, ...testDrive}:PreOrderProps) => {
+  try {
+    const preOrderRef = collection(db, 'carPreOrder');
+    
+    // Include the createdAt field with the current timestamp
+    const preOrderWithTimestamp = {
+      ...testDrive,
+      createdAt: Timestamp.fromDate(new Date()),
+    };
+
+    // Add the document to Firestore
+    const docRef = await addDoc(preOrderRef, preOrderWithTimestamp);
+
+   
+    // Return the document ID or other useful information
+    const newPreOrder = {
+      ...preOrderWithTimestamp,
+      orderId: docRef.id
+    };
+    return newPreOrder
+  } catch (error) {
+    console.error('Error adding appointment:', error);
+    throw error;
+  }
+};
 
 
   export const updatePreOrder = async (userId: string, orderToUpdate: { order: Partial<PreOrderProps>, type: string }) => {
@@ -224,6 +226,27 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
     // Return the result as a stringified object (if needed)
     return parseStringify(data)  
   };
+
+  export const checkOrder = async(email: string) => {
+    try {
+      const preOrderRef = collection(db, 'carPreOrder');
+      const q = query(
+        preOrderRef,
+        where('email', '==', email),
+      );
+      // Execute the query
+    const querySnapshot = await getDocs(q);
+    // Map over all the matched documents and return the data
+    const preOrdersData = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log(preOrdersData, 'the preorders')
+    return preOrdersData
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   export const ScheduleAppointment = async ({id, ...appointment}:AppointmentProps) =>  {
     try {

@@ -100,7 +100,7 @@ export const manufacturers = [
   ];
 
   export const StatusIcon = {
-    confirm: "/assets/icons/check.svg",
+    confirmed: "/assets/icons/check.svg",
     pending: "/assets/icons/pending.svg",
     cancelled: "/assets/icons/cancelled.svg",
   };

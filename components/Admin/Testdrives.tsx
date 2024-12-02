@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useEffect, useState } from 'react';
 import StatCard from '@/components/StatCard';
 import { fetchCarBooking } from '@/lib/actions/bookingactions';
@@ -14,19 +12,8 @@ interface TestDriveData {
 }
 
 
-const TestDrives = () => {
-  // Use TestDriveData type with useState
-  const [testDrives, setTestDrives] = useState<TestDriveData | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchCarBooking();
-      setTestDrives(data);
-    };
-    fetchData();
-  }, []);
-
-  if (!testDrives) return <div>Loading...</div>;
+const TestDrives = async() => {
+  const testDrives = await fetchCarBooking();
 
   return (
     <div className="mx-auto flex w-full flex-col space-y-14 bg-[#110716]">

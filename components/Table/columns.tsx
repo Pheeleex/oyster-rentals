@@ -1,14 +1,11 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table" 
-
 import { formatDateTime } from "@/lib/utils"
 import Image from "next/legacy/image"
-
 import {  TestDriveProps } from "@/types"
 import { StatusBadge } from "../StatusBadge"
 import AppointmentModal from "../AppointmentModal"
-import { deleteBooking } from "@/lib/actions/bookingactions"
 
 
 

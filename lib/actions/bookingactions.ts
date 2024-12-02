@@ -98,7 +98,7 @@ export const createCarBooking = async ({carId, ...testDrive}:TestDriveProps) => 
         ...bookingToUpdate.testDrive,
         // Add any other fields to update if necessary
       });
-      revalidatePath('/admin/Dashboard')
+      revalidatePath('/admin')
       return updatedBooking
     } catch (error) {
       console.error('Error updating appointment:', error);
@@ -170,7 +170,7 @@ export const createPreOrder = async ({orderId, ...testDrive}:PreOrderProps) => {
         // Add any other fields to update if necessary
       });
      
-      revalidatePath('/admin/Dashboard')
+      revalidatePath('/admin')
       return updatedOrder
     } catch (error) {
       console.error('Error updating appointment:', error);
@@ -333,7 +333,7 @@ export const createPreOrder = async ({orderId, ...testDrive}:PreOrderProps) => {
         ...appointmentToUpdate.appointment
         // Add any other fields to update if necessary
       });
-      revalidatePath('/admin/Dashboard')
+      revalidatePath('/admin')
       return updatedAppointment
     } catch (error) {
       console.error('Error updating appointment:', error);

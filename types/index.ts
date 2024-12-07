@@ -131,6 +131,7 @@ export interface SearchManuFacturerProps {
     id: string;
     images?: string[];
     imageFiles?: File []
+    price?: string
   }
 
 

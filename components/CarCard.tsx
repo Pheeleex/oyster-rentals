@@ -22,7 +22,7 @@ const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen, bookingSchedul
     const [success, setSuccess] = useState<boolean>(false)
 
 
-    const {Drive, FuelType, Make, Model, Transmission, images } = car;
+    const {Drive, FuelType, Make, Model, Transmission, images, price } = car;
 
     const testDriveBooked = () => {
         setIsOpen(false)
@@ -54,12 +54,11 @@ const CarCard = ({ car, buttonTitle, showBookingForm,detailsOpen, bookingSchedul
         <p className='flex mt-6 text-[32px] font-extrabold'>
             <span className='self-start text-[14px]
                 font-semibold'>
-               $
+               ${price}
             </span>
            
             <span className='self-start text-[14px]
                 font-semibold'>
-               /day
             </span>
         </p>
 

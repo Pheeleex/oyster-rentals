@@ -40,6 +40,9 @@ const PassKeyModal = ({ closeModal }: { closeModal: () => void }) => {
       setCookie(null, 'accessKey', encryptedKey, {
         maxAge: 30 * 24 * 60 * 60, // 30 days
         path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: false,
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // Use stricter settings in production
       });
       setOpen(false);
       router.push('/admin');

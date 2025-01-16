@@ -30,7 +30,7 @@ const Footer = () => {
       // If cookie exists, consider the user logged in
       setIsLoggedIn(true);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   // Function to open the modal
   const handleAdminClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

@@ -1,12 +1,9 @@
-import { CarProps, CarSpecProps, TestDriveProps } from "@/types";
+import { CarProps, CarSpecProps } from "@/types";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
 import { Fragment, useState } from "react";
 import JoinUs from "./JoinUs";
 import CarBookingForm from "./Forms/CarBookingForm";
-import CustomButton from "./CustomButton";
-import PreOrderForm from "./Forms/PreOrderForm";
-import { generateCarImageUrl } from "@/utils";
 import ImageGallery from "./ImageGallery";
 import PreOrderSection from "./PreOrderSection";
 
@@ -43,11 +40,6 @@ const CarDetails = ({
     const carManufacturer = car && (isCarSpecProps(car) ? car.Make : isCarProps(car) ? car.make : '');
     const carModel = car && (isCarSpecProps(car) ? car.Model : isCarProps(car) ? car.model : '');
 
-    const showPreOrderForm = () => {
-        setShowForm(true);
-    };
-
-   
 
     return (
         <>
@@ -88,11 +80,11 @@ const CarDetails = ({
                                             height={20}
                                         />
                                     </button>
-                                        <ImageGallery 
-                                            car={car}
-                                            isCarProps={isCarProps}
-                                            isCarSpecProps={isCarSpecProps}
-                                        />
+                                    <ImageGallery
+                                        car={car}
+                                        isCarProps={isCarProps}
+                                        isCarSpecProps={isCarSpecProps}
+                                    />
                                     {/*If show booking form is true render car booking form, else show the
                                     pre order car properties and preOrderSection*/}
                                     {showBookingForm ? (
@@ -105,17 +97,17 @@ const CarDetails = ({
                                                 closeModal={closeModal}
                                                 booked={booked}
                                             />
-                                           
+
                                             <JoinUs />
                                         </div>
-                                    ) 
-                                        : 
-                                    (
-                                        <PreOrderSection
-                                            car={car}
-                                            isCarProps={isCarProps}
-                                        />
-                                    )}
+                                    )
+                                        :
+                                        (
+                                            <PreOrderSection
+                                                car={car}
+                                                isCarProps={isCarProps}
+                                            />
+                                        )}
                                 </DialogPanel>
                             </TransitionChild>
                         </div>

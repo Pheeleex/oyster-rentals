@@ -11,8 +11,8 @@ import { moreProps, PreOrderProps } from '@/types';
 const Page = () => {
   // Use router to get the userId from the URL
   const router = useRouter();
-  const {id} = useParams()
-  const [preorderDetails, setPreorderDetails] = useState<PreOrderProps | null>(null); 
+  const { id } = useParams()
+  const [preorderDetails, setPreorderDetails] = useState<PreOrderProps | null>(null);
   // Log the user ID to confirm it's correct
   useEffect(() => {
     const storedOrderData = sessionStorage.getItem(`orderData-${id}`);
@@ -48,14 +48,14 @@ const Page = () => {
             alt="success"
           />
           <h2 className="header mb-6 max-w-[600px] text-center">
-           {preorderDetails?.name} your <span className="text-green-500">preorder request</span> has
+            {preorderDetails?.name} your <span className="text-green-500">preorder request</span> has
             been successfully submitted!
           </h2>
           <p>Create an account with us to see real-time updates and track your order.</p>
           <section>
             <p>{preorderDetails?.carManufacturer} {preorderDetails?.carModel}</p>
           </section>
-          <button 
+          <button
             onClick={handleSignIn}
             className="bg-blue-950 text-white p-2 rounded cursor-pointer mt-2"
           >

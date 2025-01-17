@@ -46,7 +46,7 @@ const Home: NextPage = () => {
           console.error('Error fetching pre-orders:', error);
         }
       };
-      
+
       fetchPreOrders();
     }
   }, [userEmail]); // Trigger when the email is set
@@ -63,8 +63,8 @@ const Home: NextPage = () => {
     return () => unsubscribe();
   }, [router]);
 
-   // Open the dialog box
-   const openDialog = () => {
+  // Open the dialog box
+  const openDialog = () => {
     setIsDialogOpen(true);
   };
 
@@ -90,15 +90,17 @@ const Home: NextPage = () => {
                 btnType='button'
                 containerStyles="bg-primary-blue text-white
               rounded-full mt-10"
-              rightIcon="/right-arrow.svg"
-              handleClick={() => {console.log('click'); 
-                openDialog()}}
+                rightIcon="/right-arrow.svg"
+                handleClick={() => {
+                  console.log('click');
+                  openDialog()
+                }}
               />
             </div>
           )}
         </div>
-         {/* Render the dialog box if open */}
-      {isDialogOpen && <TrackOrdersDialogBox orders={Orders} closeDialog={closeDialog} />}
+        {/* Render the dialog box if open */}
+        {isDialogOpen && <TrackOrdersDialogBox orders={Orders} closeDialog={closeDialog} />}
       </header>
 
       <main className="flex flex-col md:flex-row items-center justify-center p-6 gap-12">
@@ -116,7 +118,7 @@ const Home: NextPage = () => {
           <h3 className="text-xl font-semibold mb-2">Trade-In Offers</h3>
           <p className="mb-4">Check the current trade-in value of your vehicle and explore upgrade options.</p>
           <button onClick={scrollToCarTrade}
-          className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
           >Check Offers</button>
         </div>
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-[20rem] min-h-[15rem] text-center flex flex-col justify-between">
@@ -125,13 +127,13 @@ const Home: NextPage = () => {
             Click here to see a more diverse inventory of cars, place a request and we will get back to you
           </p>
           <Link href='/pre-order' className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-          Visit Directory
+            Visit Directory
           </Link>
         </div>
       </main>
 
       <div className='mt-20 w-[85%]' ref={carTradeRef}>
-        <CarTrade 
+        <CarTrade
           initialLimit={5}
           make=''
           model=''
@@ -139,10 +141,10 @@ const Home: NextPage = () => {
           fuel='' />
       </div>
 
-      <ScheduleDetails 
-        isOpen={isScheduleOpen} 
-        closeModal={closeSchedule} 
-        userName= {userName || 'Guest'}
+      <ScheduleDetails
+        isOpen={isScheduleOpen}
+        closeModal={closeSchedule}
+        userName={userName || 'Guest'}
       />
     </div>
   );

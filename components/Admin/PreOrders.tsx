@@ -11,7 +11,7 @@ interface PreOrderData {
   documents: Array<{ /* define document structure if known */ }>;
 }
 
-const PreOrders =  async() => {
+const PreOrders = async () => {
   const preOrders = await fetchPreOrder()
   return (
     <div className='mx-auto flex w-full flex-col space-y-14 bg-[#110716]'>
@@ -42,9 +42,9 @@ const PreOrders =  async() => {
             icon={"/assets/icons/cancelled.svg"}
           />
         </section>
-       <DataTable data={preOrders.documents} columns={pocolumns} />
+        <DataTable data={preOrders.documents} columns={pocolumns} />
       </main>
-       
+
     </div>
   )
 }

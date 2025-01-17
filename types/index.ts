@@ -2,18 +2,18 @@ import { Dispatch, MouseEventHandler, SetStateAction } from "react";
 
 export type Status = "pending" | "confirm" | "cancelled";
 
-export interface CustomButtonProps{
-    title: string;
-    containerStyles?: string;
-    handleClick?: MouseEventHandler<HTMLButtonElement>;
-    btnType: "button" | "submit";
-    textStyles?: string;
-    rightIcon?: string
-    isDisabled?: boolean
-    isLoading?: boolean
+export interface CustomButtonProps {
+  title: string;
+  containerStyles?: string;
+  handleClick?: MouseEventHandler<HTMLButtonElement>;
+  btnType: "button" | "submit";
+  textStyles?: string;
+  rightIcon?: string
+  isDisabled?: boolean
+  isLoading?: boolean
 }
 
-export interface OptionProps{
+export interface OptionProps {
   title: string;
   value: string
 }
@@ -23,13 +23,13 @@ export interface SearchParamProps {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export interface OrderSearchProps{
+export interface OrderSearchProps {
   searchParams: PreOrderProps
 }
 
-export interface TestDriveProps{
+export interface TestDriveProps {
   name?: string;
-  phone?:string;
+  phone?: string;
   email?: string;
   schedule?: Date
   carId?: string
@@ -43,9 +43,9 @@ export interface TestDriveProps{
   car?: CarSpecProps
 }
 
-export interface PreOrderProps{
+export interface PreOrderProps {
   name?: string;
-  phone?:string;
+  phone?: string;
   email?: string;
   carManufacturer?: string;
   carModel?: string;
@@ -60,15 +60,15 @@ export interface PreOrderProps{
   notes?: string
 }
 
-export interface moreProps{
+export interface moreProps {
   totalCount: number;
   scheduledCount: number;
   pendingCount: number;
   cancelledCount: number;
-documents: PreOrderProps
+  documents: PreOrderProps
 }
 
-export interface AppointmentProps{
+export interface AppointmentProps {
   id: string;
   appointmentId?: string;
   schedule: Date;
@@ -78,74 +78,74 @@ export interface AppointmentProps{
   userName?: string
 }
 
-export interface CustomFilterProps{
-    title: string;
-    options: OptionProps[]
+export interface CustomFilterProps {
+  title: string;
+  options: OptionProps[]
 }
 
 export interface SearchManuFacturerProps {
-    manufacturer: string;
-    setManuFacturer: (manufacturer: string) => void;
-  }
+  manufacturer: string;
+  setManuFacturer: (manufacturer: string) => void;
+}
 
-  export interface CarProps{
-    "city_mpg": number,
-    "class": string,
-    "combination_mpg": number,
-    "cylinders": number,
-    "displacement": number,
-    "drive": string,
-    "fuel_type": string,
-    "highway_mpg": number,
-    "make": string,
-    "model": string,
-    "transmission": string,
-    "year": number
-    id: string,
-  }
+export interface CarProps {
+  "city_mpg": number,
+  "class": string,
+  "combination_mpg": number,
+  "cylinders": number,
+  "displacement": number,
+  "drive": string,
+  "fuel_type": string,
+  "highway_mpg": number,
+  "make": string,
+  "model": string,
+  "transmission": string,
+  "year": number
+  id: string,
+}
 
-  export interface ShowMoreProps {
-    pageNumber: number;
-    isNext: boolean;
-  }
+export interface ShowMoreProps {
+  pageNumber: number;
+  isNext: boolean;
+}
 
-  export interface FilterProps{
-    manufacturer: string,
-    limit: number,
-    model: string,
-    year: number,
-    fuel: string
-  }
+export interface FilterProps {
+  manufacturer: string,
+  limit: number,
+  model: string,
+  year: number,
+  fuel: string
+}
 
-  export interface HomeProps {
-    searchParams: FilterProps;
-  }
+export interface HomeProps {
+  searchParams: FilterProps;
+}
 
-  export interface CarSpecProps {
-    Drive: string,
-    FuelType: string,
-    Make: string,
-    Model: string,
-    Transmission: String
-    ImagePath?: string
-    id: string;
-    images?: string[];
-    imageFiles?: File []
-    price?: string
-  }
+export interface CarSpecProps {
+  Drive: string,
+  FuelType: string,
+  Make: string,
+  Model: string,
+  Transmission: String
+  ImagePath?: string
+  id: string;
+  images?: string[];
+  imageFiles?: File[]
+  price?: string
+}
 
 
-  export interface TradeProps{
-    name?: string;
-    phone?:string;
-    email?: string;
-    carManufacturer?: string;
-    carModel?: string;
-    trim?: string;
-    year?: number;
-    carId?: string
-    notes?: string
-  }
+export interface TradeProps {
+  name?: string;
+  phone?: string;
+  email?: string;
+  carManufacturer?: string;
+  carModel?: string;
+  trim?: string;
+  year?: number;
+  carId?: string
+  notes?: string
+}
 
-  export type SetCars = Dispatch<SetStateAction<CarSpecProps[]>>
-  export type SetTestDrive = Dispatch<SetStateAction<TestDriveProps[]>>
+export type SetCars = Dispatch<SetStateAction<CarSpecProps[]>>
+export type SetTestDrive = Dispatch<SetStateAction<TestDriveProps[]>>

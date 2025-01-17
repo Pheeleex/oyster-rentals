@@ -30,24 +30,24 @@ const Footer = () => {
       // If cookie exists, consider the user logged in
       setIsLoggedIn(true);
     }
-  }, [isLoggedIn]);
+  }, []);
 
   // Function to open the modal
   const handleAdminClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault(); // Prevent default link behavior
-   if(!isLoggedIn) {
-    setIsModalOpen(true)
-   } else{
-    router.push("/admin")
-   }
+    if (!isLoggedIn) {
+      setIsModalOpen(true)
+    } else {
+      router.push("/admin")
+    }
   };
 
   return (
     <footer className='flex flex-col text-black-100  mt-16 border-t border-gray-100'>
       {/* Render PassKeyModal and control its visibility */}
       {
-        isModalOpen && <PassKeyModal closeModal={() => setIsModalOpen(false)}   /> }
-    
+        isModalOpen && <PassKeyModal closeModal={() => setIsModalOpen(false)} />}
+
       <div className='flex max-md:flex-col flex-wrap justify-between gap-5 sm:px-16 px-6 py-10'>
         <div className='flex flex-col justify-start items-start gap-6'>
           <Image src='/logo.svg' alt='logo' width={118} height={18} className='object-contain' />

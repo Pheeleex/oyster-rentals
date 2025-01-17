@@ -31,7 +31,7 @@ export function middleware(req: NextRequest) {
   if (isAdminPath) {
     if (adminAccess) {
       const decryptedKey = decryptKey(adminAccess);
-      
+
       // Check if accessKey is valid
       if (decryptedKey && decryptedKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
         return NextResponse.next(); // Allow admin access

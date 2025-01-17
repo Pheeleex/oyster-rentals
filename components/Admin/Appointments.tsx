@@ -5,7 +5,7 @@ import { fetchAppointments } from '@/lib/actions/bookingactions'
 import React from 'react'
 
 const Appointments = async () => {
-    const appointments = await fetchAppointments()
+  const appointments = await fetchAppointments()
   return (
     <div className='mx-auto flex w-full flex-col space-y-14 bg-[#110716]'>
       <main className="admin-main">
@@ -35,9 +35,9 @@ const Appointments = async () => {
             icon={"/assets/icons/cancelled.svg"}
           />
         </section>
-       <DataTable data={appointments.documents} columns={servicecolumns} />
+        <DataTable data={appointments.documents} columns={servicecolumns} />
       </main>
-       
+
     </div>
   )
 }

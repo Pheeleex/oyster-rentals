@@ -12,7 +12,7 @@ interface TestDriveData {
 }
 
 
-const TestDrives = async() => {
+const TestDrives = async () => {
   const testDrives = await fetchCarBooking();
 
   return (
@@ -42,8 +42,8 @@ const TestDrives = async() => {
             label="Cancelled appointments"
             icon="/assets/icons/cancelled.svg"
           />
-        </section>                              
-          {/*@ts-ignore */}
+        </section>
+        {/*@ts-ignore */}
         <DataTable data={testDrives.documents ?? []} columns={columns} />
       </main>
     </div>

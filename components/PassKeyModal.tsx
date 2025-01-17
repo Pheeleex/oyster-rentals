@@ -1,10 +1,9 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -18,8 +17,7 @@ import {
 } from '@/components/ui/input-otp';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/legacy/image';
-import { decryptKey, encryptKey } from '@/lib/utils';
-import { setCookie } from 'nookies';
+
 
 const PassKeyModal = ({ closeModal }: { closeModal: () => void }) => {
   const [open, setOpen] = useState(true);
@@ -28,29 +26,32 @@ const PassKeyModal = ({ closeModal }: { closeModal: () => void }) => {
   const router = useRouter();
   const path = usePathname();
 
-  
+
 
   // Validate passkey
-  const validatePassKey = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const validatePassKey = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
-      // Encrypt and store the passkey in cookies
-      const encryptedKey = encryptKey(passkey);
-      setCookie(null, 'accessKey', encryptedKey, {
-        maxAge: 30 * 24 * 60 * 60, // 30 days
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: false,
-        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // Use stricter settings in production
+    try {
+      const response = await fetch('/api/auth/set-cookie', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ passkey }),
       });
-      setOpen(false);
-      router.push('/admin');
-    } else {
-      setError('Invalid passkey. Please try again.');
+
+      if (response.ok) {
+        setOpen(false);
+        router.push('/admin');
+      } else {
+        const { error } = await response.json();
+        setError(error || 'Invalid passkey. Please try again.');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
     }
   };
-
   // Close the modal and redirect
   const handleCloseModal = () => {
     setOpen(false);

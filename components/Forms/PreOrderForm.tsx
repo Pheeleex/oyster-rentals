@@ -38,8 +38,8 @@ const PreOrderForm = ({
     name: order ? order.name : '',
     email: order ? order.email : '',
     phone: order ? order.phone : '',
-    carManufacturer:  carManufacturer || '',
-    carModel:  carModel || '',
+    carManufacturer: carManufacturer || '',
+    carModel: carModel || '',
     year: year || 2022,
     trim: '',
     method: '',
@@ -52,13 +52,13 @@ const PreOrderForm = ({
     defaultValues
   });
 
-const router = useRouter()
+  const router = useRouter()
 
-const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-async function onSubmit(values: z.infer<typeof PreOrderFormValidation>) {
+  async function onSubmit(values: z.infer<typeof PreOrderFormValidation>) {
     setIsLoading(true)
-    
+
     let status: string;
     switch (type) {
       case 'confirm':
@@ -71,172 +71,172 @@ async function onSubmit(values: z.infer<typeof PreOrderFormValidation>) {
         status = 'pending';
         break;
     }
-  try {
-    const generatedCarId = v4()
-      if(type === 'create'){
+    try {
+      const generatedCarId = v4()
+      if (type === 'create') {
         const orderData = {
           ...values,
           carId: carId ? carId : generatedCarId,
           status: status as Status,
           userId: v4()
         }
-        const order = await  createPreOrder(orderData);
-        if(order){
+        const order = await createPreOrder(orderData);
+        if (order) {
           sessionStorage.setItem(`orderData-${order.userId}`, JSON.stringify(orderData));
           router.push(`pre-order/success/${order.userId}`)
         }
       }
-      else{
+      else {
         const updatedPreOrder = {
           order: {
-          carId: order?.carId,
-          orderId: orderId,
-          status: status as Status,
-          notes: values.notes || '',
-        },
-        type,
-      }
-      const updatedAppointment = await updatePreOrder(orderId!, updatedPreOrder)
+            carId: order?.carId,
+            orderId: orderId,
+            status: status as Status,
+            notes: values.notes || '',
+          },
+          type,
+        }
+        const updatedAppointment = await updatePreOrder(orderId!, updatedPreOrder)
         setOpen?.(false);
       }
-  } catch (error) {
-    console.log('Error processing the order:', error)
+    } catch (error) {
+      console.log('Error processing the order:', error)
+    }
+    finally {
+      setIsLoading(false)
+    }
   }
-  finally{
-    setIsLoading(false)
-  }
-}
-return (
-  <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
-     
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
 
-     { type === 'create' && (
-       <section>
-      <CustomFormField
-      fieldType={FormFieldType.INPUT}
-      control={form.control}
-      name="name"
-      label="Full name"
-      placeholder="John Doe"
-      iconSrc="/assets/icons/user.svg"
-      iconAlt="user"
-    />
 
-    <CustomFormField
-        fieldType={FormFieldType.INPUT}
-        control={form.control}
-        name="email"
-        label="Email address"
-        placeholder="johndoe@gmail.com"
-        iconSrc="/assets/icons/email.svg"
-        iconAlt="email"
-      />
+        {type === 'create' && (
+          <section>
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="name"
+              label="Full name"
+              placeholder="John Doe"
+              iconSrc="/assets/icons/user.svg"
+              iconAlt="user"
+            />
 
-      <CustomFormField
-        fieldType={FormFieldType.PHONE_INPUT}
-        control={form.control}
-        name="phone"
-        label="Phone Number"
-        placeholder="(555) 123-4567"
-      />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="email"
+              label="Email address"
+              placeholder="johndoe@gmail.com"
+              iconSrc="/assets/icons/email.svg"
+              iconAlt="email"
+            />
 
-      <CustomFormField
-        fieldType={FormFieldType.INPUT}
-        control={form.control}
-        name="carManufacturer"
-        label="Car Manufacturer"
-        placeholder="volkswagen"
-         iconSrc="/car-logo.svg"
-      />
+            <CustomFormField
+              fieldType={FormFieldType.PHONE_INPUT}
+              control={form.control}
+              name="phone"
+              label="Phone Number"
+              placeholder="(555) 123-4567"
+            />
 
-      <CustomFormField
-        fieldType={FormFieldType.INPUT}
-        control={form.control}
-        name="carModel"
-        label="Car Model"
-        placeholder="golf"
-      />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="carManufacturer"
+              label="Car Manufacturer"
+              placeholder="volkswagen"
+              iconSrc="/car-logo.svg"
+            />
 
-      <CustomFormField
-        fieldType={FormFieldType.INPUT}
-        control={form.control}
-        name="year"
-        label="year"
-        placeholder="2020"
-      />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="carModel"
+              label="Car Model"
+              placeholder="golf"
+            />
 
-      <CustomFormField
-        fieldType={FormFieldType.INPUT}
-        control={form.control}
-        name="trim"
-        label="Trim"
-        placeholder="gti"
-      />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="year"
+              label="year"
+              placeholder="2020"
+            />
 
-    <div>
-        <h4>Have you found a particular one you want to buy yet or would you like us to search for you</h4>
-        <CustomFormField
-        fieldType={FormFieldType.SKELETON}
-        control={form.control}
-        name="method"
-        label="Yes/No"
-        renderSkeleton={(field) => (
-          <FormControl>
-            <RadioGroup
-              className="flex h-11 gap-6 xl:justify-between"
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-            >
-              {['Yes I have found one online', 'No, I would like you to search for me'].map((option, i) => (
-                <div key={option + i} className="radio-group gold-border">
-                  <RadioGroupItem value={option} id={option} />
-                  <Label htmlFor={option} className="cursor-pointer text-blue-400">
-                    {option}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>  
-          </FormControl>
-        )}
-      />
-    </div>
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="trim"
+              label="Trim"
+              placeholder="gti"
+            />
 
-      <CustomFormField
-        fieldType={FormFieldType.INPUT}
-        control={form.control}
-        name="websiteLink"
-        label="Link to website or listing (fill none if you dont have any)"
-        placeholder="ebaymotors.com"
-      />
+            <div>
+              <h4>Have you found a particular one you want to buy yet or would you like us to search for you</h4>
+              <CustomFormField
+                fieldType={FormFieldType.SKELETON}
+                control={form.control}
+                name="method"
+                label="Yes/No"
+                renderSkeleton={(field) => (
+                  <FormControl>
+                    <RadioGroup
+                      className="flex h-11 gap-6 xl:justify-between"
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      {['Yes I have found one online', 'No, I would like you to search for me'].map((option, i) => (
+                        <div key={option + i} className="radio-group gold-border">
+                          <RadioGroupItem value={option} id={option} />
+                          <Label htmlFor={option} className="cursor-pointer text-blue-400">
+                            {option}
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                )}
+              />
+            </div>
+
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="websiteLink"
+              label="Link to website or listing (fill none if you dont have any)"
+              placeholder="ebaymotors.com"
+            />
           </section>
-     )}
-                {
-  type === 'confirm' && (
-    <div className="w-full">
-      {/* Displaying Name, Email, Phone Number, and Location as text */}
-      <div className="flex flex-wrap gap-8 items-center">
-        <p><strong>Name:</strong> {order?.name}</p>
-        <p><strong>Email:</strong> {order?.email}</p>
-        <p><strong>Phone:</strong> {order?.phone}</p>
-        <p><strong>Location:</strong> {order?.carManufacturer}  {order?.carModel}</p>
-      </div>
+        )}
+        {
+          type === 'confirm' && (
+            <div className="w-full">
+              {/* Displaying Name, Email, Phone Number, and Location as text */}
+              <div className="flex flex-wrap gap-8 items-center">
+                <p><strong>Name:</strong> {order?.name}</p>
+                <p><strong>Email:</strong> {order?.email}</p>
+                <p><strong>Phone:</strong> {order?.phone}</p>
+                <p><strong>Location:</strong> {order?.carManufacturer}  {order?.carModel}</p>
+              </div>
 
-      {/* Other fields remain editable */}
+              {/* Other fields remain editable */}
 
-        <CustomFormField
-          fieldType={FormFieldType.TEXTAREA}
-          control={form.control}
-          name="notes"
-          label="Comments/Notes"
-          placeholder="Prefer afternoon appointments, if possible"
-        />
-      </div>
-  )
-}
+              <CustomFormField
+                fieldType={FormFieldType.TEXTAREA}
+                control={form.control}
+                name="notes"
+                label="Comments/Notes"
+                placeholder="Prefer afternoon appointments, if possible"
+              />
+            </div>
+          )
+        }
 
 
-{
+        {
           type === "cancel" && (
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
@@ -249,10 +249,10 @@ return (
         }
 
 
-            <SubmitButton isLoading={isLoading}> Submit </SubmitButton>
-  
-    </form>
-  </Form>
-)
+        <SubmitButton isLoading={isLoading}> Submit </SubmitButton>
+
+      </form>
+    </Form>
+  )
 }
 export default PreOrderForm

@@ -1,0 +1,13 @@
+For admin authentication, we first click the admin dashboard button in the footer to open a dialogue box called passkey modal, the passkey modal expects a 6digit accesskey, if correct, the user is allowed to navigate to the admin section.
+
+FILES
+api/auth/set-cookie/route.ts
+footer.ts
+passkeyModal.tsx
+middleware.ts
+
+FUNCTIONS
+Footer.tsx
+getCookie()
+handleAdminClick() - opens the dialogue box
+
